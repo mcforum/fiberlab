@@ -1,0 +1,801 @@
+no,fibre,sample,ping,L_cm
+1,human hair,1,1,199.91
+1,human hair,1,2,198.61
+1,human hair,1,3,198.59
+1,human hair,1,4,199.48
+1,human hair,1,5,199.91
+1,human hair,1,6,199.03
+1,human hair,1,7,198.59
+1,human hair,1,8,198.61
+1,human hair,1,9,199.89
+1,human hair,1,10,198.14
+1,human hair,1,11,198.61
+1,human hair,1,12,199.03
+1,human hair,1,13,199.03
+1,human hair,1,14,198.57
+1,human hair,1,15,199.03
+1,human hair,1,16,200.34
+1,human hair,1,17,199.02
+1,human hair,1,18,199.05
+1,human hair,1,19,199.46
+1,human hair,1,20,198.61
+1,human hair,1,21,200.32
+1,human hair,1,22,198.59
+1,human hair,1,23,199.46
+1,human hair,1,24,199.03
+1,human hair,1,25,200.34
+1,human hair,1,26,198.59
+1,human hair,1,27,199.03
+1,human hair,1,28,199.46
+1,human hair,1,29,199.46
+1,human hair,1,30,198.61
+1,human hair,1,31,198.57
+1,human hair,1,32,199.02
+1,human hair,1,33,200.75
+1,human hair,1,34,198.59
+1,human hair,1,35,199.03
+1,human hair,1,36,198.57
+1,human hair,1,37,199.03
+1,human hair,1,38,198.61
+1,human hair,1,39,200.75
+1,human hair,1,40,198.59
+1,human hair,1,41,198.55
+1,human hair,1,42,198.59
+1,human hair,1,43,198.59
+1,human hair,1,44,198.59
+1,human hair,1,45,199.02
+1,human hair,1,46,200.75
+1,human hair,1,47,199.03
+1,human hair,1,48,199.46
+1,human hair,1,49,199.02
+1,human hair,1,50,201.18
+2,polyester,1,1,100.44
+2,polyester,1,2,100.42
+2,polyester,1,3,100.83
+2,polyester,1,4,100.44
+2,polyester,1,5,100.42
+2,polyester,1,6,100.83
+2,polyester,1,7,100.83
+2,polyester,1,8,100.46
+2,polyester,1,9,101.30
+2,polyester,1,10,100.85
+2,polyester,1,11,100.83
+2,polyester,1,12,100.83
+2,polyester,1,13,100.46
+2,polyester,1,14,100.44
+2,polyester,1,15,100.44
+2,polyester,1,16,100.87
+2,polyester,1,17,101.30
+2,polyester,1,18,100.87
+2,polyester,1,19,100.44
+2,polyester,1,20,100.44
+2,polyester,1,21,100.46
+2,polyester,1,22,101.71
+2,polyester,1,23,100.46
+2,polyester,1,24,100.46
+2,polyester,1,25,100.44
+2,polyester,1,26,101.30
+2,polyester,1,27,100.83
+2,polyester,1,28,100.85
+2,polyester,1,29,100.83
+2,polyester,1,30,100.46
+2,polyester,1,31,100.46
+2,polyester,1,32,100.44
+2,polyester,1,33,100.46
+2,polyester,1,34,100.44
+2,polyester,1,35,100.44
+2,polyester,1,36,100.46
+2,polyester,1,37,100.85
+2,polyester,1,38,100.44
+2,polyester,1,39,101.71
+2,polyester,1,40,100.44
+2,polyester,1,41,100.44
+2,polyester,1,42,100.46
+2,polyester,1,43,100.44
+2,polyester,1,44,100.46
+2,polyester,1,45,101.30
+2,polyester,1,46,100.46
+2,polyester,1,47,100.88
+2,polyester,1,48,100.46
+2,polyester,1,49,100.88
+2,polyester,1,50,100.85
+3,ceramic fibre,1,1,81.77
+3,ceramic fibre,1,2,80.92
+3,ceramic fibre,1,3,80.93
+3,ceramic fibre,1,4,80.92
+3,ceramic fibre,1,5,80.92
+3,ceramic fibre,1,6,80.92
+3,ceramic fibre,1,7,80.90
+3,ceramic fibre,1,8,80.90
+3,ceramic fibre,1,9,80.90
+3,ceramic fibre,1,10,80.90
+3,ceramic fibre,1,11,80.90
+3,ceramic fibre,1,12,81.29
+3,ceramic fibre,1,13,80.93
+3,ceramic fibre,1,14,80.90
+3,ceramic fibre,1,15,81.31
+3,ceramic fibre,1,16,80.93
+3,ceramic fibre,1,17,80.92
+3,ceramic fibre,1,18,80.90
+3,ceramic fibre,1,19,80.93
+3,ceramic fibre,1,20,81.31
+3,ceramic fibre,1,21,81.77
+3,ceramic fibre,1,22,80.90
+3,ceramic fibre,1,23,81.31
+3,ceramic fibre,1,24,81.76
+3,ceramic fibre,1,25,80.92
+3,ceramic fibre,1,26,80.92
+3,ceramic fibre,1,27,80.93
+3,ceramic fibre,1,28,80.92
+3,ceramic fibre,1,29,81.76
+3,ceramic fibre,1,30,80.90
+3,ceramic fibre,1,31,80.90
+3,ceramic fibre,1,32,80.90
+3,ceramic fibre,1,33,80.93
+3,ceramic fibre,1,34,81.31
+3,ceramic fibre,1,35,80.93
+3,ceramic fibre,1,36,80.92
+3,ceramic fibre,1,37,80.90
+3,ceramic fibre,1,38,80.92
+3,ceramic fibre,1,39,81.34
+3,ceramic fibre,1,40,81.31
+3,ceramic fibre,1,41,81.29
+3,ceramic fibre,1,42,80.90
+3,ceramic fibre,1,43,81.31
+3,ceramic fibre,1,44,80.90
+3,ceramic fibre,1,45,80.92
+3,ceramic fibre,1,46,81.31
+3,ceramic fibre,1,47,80.90
+3,ceramic fibre,1,48,80.92
+3,ceramic fibre,1,49,80.92
+3,ceramic fibre,1,50,81.76
+4,spider silk (dragline),1,1,39.86
+4,spider silk (dragline),1,2,39.46
+4,spider silk (dragline),1,3,39.91
+4,spider silk (dragline),1,4,39.46
+4,spider silk (dragline),1,5,39.46
+4,spider silk (dragline),1,6,39.46
+4,spider silk (dragline),1,7,39.86
+4,spider silk (dragline),1,8,39.86
+4,spider silk (dragline),1,9,39.88
+4,spider silk (dragline),1,10,39.88
+4,spider silk (dragline),1,11,39.88
+4,spider silk (dragline),1,12,39.88
+4,spider silk (dragline),1,13,39.88
+4,spider silk (dragline),1,14,39.88
+4,spider silk (dragline),1,15,39.88
+4,spider silk (dragline),1,16,39.88
+4,spider silk (dragline),1,17,39.91
+4,spider silk (dragline),1,18,39.48
+4,spider silk (dragline),1,19,39.88
+4,spider silk (dragline),1,20,39.46
+4,spider silk (dragline),1,21,39.46
+4,spider silk (dragline),1,22,39.46
+4,spider silk (dragline),1,23,39.46
+4,spider silk (dragline),1,24,39.88
+4,spider silk (dragline),1,25,39.88
+4,spider silk (dragline),1,26,39.46
+4,spider silk (dragline),1,27,39.48
+4,spider silk (dragline),1,28,39.46
+4,spider silk (dragline),1,29,39.46
+4,spider silk (dragline),1,30,39.46
+4,spider silk (dragline),1,31,39.88
+4,spider silk (dragline),1,32,39.46
+4,spider silk (dragline),1,33,39.46
+4,spider silk (dragline),1,34,39.86
+4,spider silk (dragline),1,35,39.91
+4,spider silk (dragline),1,36,39.86
+4,spider silk (dragline),1,37,40.31
+4,spider silk (dragline),1,38,39.45
+4,spider silk (dragline),1,39,39.46
+4,spider silk (dragline),1,40,39.88
+4,spider silk (dragline),1,41,39.88
+4,spider silk (dragline),1,42,39.88
+4,spider silk (dragline),1,43,39.46
+4,spider silk (dragline),1,44,40.32
+4,spider silk (dragline),1,45,39.88
+4,spider silk (dragline),1,46,39.89
+4,spider silk (dragline),1,47,40.31
+4,spider silk (dragline),1,48,39.88
+4,spider silk (dragline),1,49,39.89
+4,spider silk (dragline),1,50,39.88
+5,spider silk (dragline),2,1,39.86
+5,spider silk (dragline),2,2,39.89
+5,spider silk (dragline),2,3,39.89
+5,spider silk (dragline),2,4,39.88
+5,spider silk (dragline),2,5,39.89
+5,spider silk (dragline),2,6,39.89
+5,spider silk (dragline),2,7,39.89
+5,spider silk (dragline),2,8,39.46
+5,spider silk (dragline),2,9,39.89
+5,spider silk (dragline),2,10,39.48
+5,spider silk (dragline),2,11,39.91
+5,spider silk (dragline),2,12,39.89
+5,spider silk (dragline),2,13,39.46
+5,spider silk (dragline),2,14,39.84
+5,spider silk (dragline),2,15,39.89
+5,spider silk (dragline),2,16,39.45
+5,spider silk (dragline),2,17,39.86
+5,spider silk (dragline),2,18,39.86
+5,spider silk (dragline),2,19,40.32
+5,spider silk (dragline),2,20,39.86
+5,spider silk (dragline),2,21,39.89
+5,spider silk (dragline),2,22,39.48
+5,spider silk (dragline),2,23,39.48
+5,spider silk (dragline),2,24,39.46
+5,spider silk (dragline),2,25,39.48
+5,spider silk (dragline),2,26,39.89
+5,spider silk (dragline),2,27,39.89
+5,spider silk (dragline),2,28,39.89
+5,spider silk (dragline),2,29,39.46
+5,spider silk (dragline),2,30,39.46
+5,spider silk (dragline),2,31,40.32
+5,spider silk (dragline),2,32,39.91
+5,spider silk (dragline),2,33,39.86
+5,spider silk (dragline),2,34,39.46
+5,spider silk (dragline),2,35,39.86
+5,spider silk (dragline),2,36,40.32
+5,spider silk (dragline),2,37,40.31
+5,spider silk (dragline),2,38,39.84
+5,spider silk (dragline),2,39,39.89
+5,spider silk (dragline),2,40,39.86
+5,spider silk (dragline),2,41,40.31
+5,spider silk (dragline),2,42,40.31
+5,spider silk (dragline),2,43,40.31
+5,spider silk (dragline),2,44,39.86
+5,spider silk (dragline),2,45,39.89
+5,spider silk (dragline),2,46,40.31
+5,spider silk (dragline),2,47,39.88
+5,spider silk (dragline),2,48,39.89
+5,spider silk (dragline),2,49,40.31
+5,spider silk (dragline),2,50,39.86
+6,spider silk (dragline),3,1,39.86
+6,spider silk (dragline),3,2,39.89
+6,spider silk (dragline),3,3,40.31
+6,spider silk (dragline),3,4,39.89
+6,spider silk (dragline),3,5,39.88
+6,spider silk (dragline),3,6,39.88
+6,spider silk (dragline),3,7,39.45
+6,spider silk (dragline),3,8,39.46
+6,spider silk (dragline),3,9,39.89
+6,spider silk (dragline),3,10,39.45
+6,spider silk (dragline),3,11,39.84
+6,spider silk (dragline),3,12,39.89
+6,spider silk (dragline),3,13,39.84
+6,spider silk (dragline),3,14,39.89
+6,spider silk (dragline),3,15,39.84
+6,spider silk (dragline),3,16,39.86
+6,spider silk (dragline),3,17,40.31
+6,spider silk (dragline),3,18,39.84
+6,spider silk (dragline),3,19,39.45
+6,spider silk (dragline),3,20,39.45
+6,spider silk (dragline),3,21,39.45
+6,spider silk (dragline),3,22,39.45
+6,spider silk (dragline),3,23,39.46
+6,spider silk (dragline),3,24,40.31
+6,spider silk (dragline),3,25,39.89
+6,spider silk (dragline),3,26,39.45
+6,spider silk (dragline),3,27,39.45
+6,spider silk (dragline),3,28,39.89
+6,spider silk (dragline),3,29,40.31
+6,spider silk (dragline),3,30,39.89
+6,spider silk (dragline),3,31,39.86
+6,spider silk (dragline),3,32,40.31
+6,spider silk (dragline),3,33,40.31
+6,spider silk (dragline),3,34,39.89
+6,spider silk (dragline),3,35,39.89
+6,spider silk (dragline),3,36,39.88
+6,spider silk (dragline),3,37,39.88
+6,spider silk (dragline),3,38,39.84
+6,spider silk (dragline),3,39,39.89
+6,spider silk (dragline),3,40,39.88
+6,spider silk (dragline),3,41,39.46
+6,spider silk (dragline),3,42,39.88
+6,spider silk (dragline),3,43,39.45
+6,spider silk (dragline),3,44,39.84
+6,spider silk (dragline),3,45,39.88
+6,spider silk (dragline),3,46,40.31
+6,spider silk (dragline),3,47,40.31
+6,spider silk (dragline),3,48,40.31
+6,spider silk (dragline),3,49,39.89
+6,spider silk (dragline),3,50,39.88
+7,spider silk (dragline),4,1,39.89
+7,spider silk (dragline),4,2,39.89
+7,spider silk (dragline),4,3,39.46
+7,spider silk (dragline),4,4,39.89
+7,spider silk (dragline),4,5,39.89
+7,spider silk (dragline),4,6,39.89
+7,spider silk (dragline),4,7,39.88
+7,spider silk (dragline),4,8,39.91
+7,spider silk (dragline),4,9,39.89
+7,spider silk (dragline),4,10,39.91
+7,spider silk (dragline),4,11,39.86
+7,spider silk (dragline),4,12,39.46
+7,spider silk (dragline),4,13,39.48
+7,spider silk (dragline),4,14,39.48
+7,spider silk (dragline),4,15,39.46
+7,spider silk (dragline),4,16,39.46
+7,spider silk (dragline),4,17,39.88
+7,spider silk (dragline),4,18,39.88
+7,spider silk (dragline),4,19,39.88
+7,spider silk (dragline),4,20,39.89
+7,spider silk (dragline),4,21,39.91
+7,spider silk (dragline),4,22,39.48
+7,spider silk (dragline),4,23,39.48
+7,spider silk (dragline),4,24,39.46
+7,spider silk (dragline),4,25,39.48
+7,spider silk (dragline),4,26,39.48
+7,spider silk (dragline),4,27,39.48
+7,spider silk (dragline),4,28,39.46
+7,spider silk (dragline),4,29,39.46
+7,spider silk (dragline),4,30,39.46
+7,spider silk (dragline),4,31,39.89
+7,spider silk (dragline),4,32,39.46
+7,spider silk (dragline),4,33,39.91
+7,spider silk (dragline),4,34,39.46
+7,spider silk (dragline),4,35,39.91
+7,spider silk (dragline),4,36,39.89
+7,spider silk (dragline),4,37,39.48
+7,spider silk (dragline),4,38,39.46
+7,spider silk (dragline),4,39,39.48
+7,spider silk (dragline),4,40,39.88
+7,spider silk (dragline),4,41,39.46
+7,spider silk (dragline),4,42,39.88
+7,spider silk (dragline),4,43,39.88
+7,spider silk (dragline),4,44,39.91
+7,spider silk (dragline),4,45,39.91
+7,spider silk (dragline),4,46,39.89
+7,spider silk (dragline),4,47,39.88
+7,spider silk (dragline),4,48,39.48
+7,spider silk (dragline),4,49,39.48
+7,spider silk (dragline),4,50,39.48
+8,human hair,2,1,202.93
+8,human hair,2,2,203.38
+8,human hair,2,3,202.49
+8,human hair,2,4,202.49
+8,human hair,2,5,202.04
+8,human hair,2,6,202.91
+8,human hair,2,7,202.93
+8,human hair,2,8,202.49
+8,human hair,2,9,203.79
+8,human hair,2,10,202.06
+8,human hair,2,11,205.08
+8,human hair,2,12,203.33
+8,human hair,2,13,202.50
+8,human hair,2,14,202.49
+8,human hair,2,15,202.04
+8,human hair,2,16,202.04
+8,human hair,2,17,205.08
+8,human hair,2,18,203.36
+8,human hair,2,19,202.47
+8,human hair,2,20,202.04
+8,human hair,2,21,202.91
+8,human hair,2,22,202.06
+8,human hair,2,23,202.49
+8,human hair,2,24,202.06
+8,human hair,2,25,202.07
+8,human hair,2,26,202.91
+8,human hair,2,27,202.49
+8,human hair,2,28,203.79
+8,human hair,2,29,202.50
+8,human hair,2,30,202.93
+8,human hair,2,31,203.79
+8,human hair,2,32,202.06
+8,human hair,2,33,202.06
+8,human hair,2,34,202.06
+8,human hair,2,35,201.63
+8,human hair,2,36,201.63
+8,human hair,2,37,202.06
+8,human hair,2,38,202.06
+8,human hair,2,39,202.49
+8,human hair,2,40,202.93
+8,human hair,2,41,202.49
+8,human hair,2,42,202.06
+8,human hair,2,43,201.61
+8,human hair,2,44,201.61
+8,human hair,2,45,202.02
+8,human hair,2,46,202.91
+8,human hair,2,47,204.22
+8,human hair,2,48,203.34
+8,human hair,2,49,202.04
+8,human hair,2,50,201.61
+9,human hair,3,1,204.63
+9,human hair,3,2,202.06
+9,human hair,3,3,202.04
+9,human hair,3,4,202.02
+9,human hair,3,5,202.49
+9,human hair,3,6,202.06
+9,human hair,3,7,202.49
+9,human hair,3,8,202.49
+9,human hair,3,9,202.04
+9,human hair,3,10,202.04
+9,human hair,3,11,203.36
+9,human hair,3,12,201.59
+9,human hair,3,13,202.49
+9,human hair,3,14,202.93
+9,human hair,3,15,201.63
+9,human hair,3,16,201.61
+9,human hair,3,17,202.04
+9,human hair,3,18,203.36
+9,human hair,3,19,202.04
+9,human hair,3,20,202.91
+9,human hair,3,21,202.04
+9,human hair,3,22,203.34
+9,human hair,3,23,202.04
+9,human hair,3,24,202.49
+9,human hair,3,25,202.49
+9,human hair,3,26,202.04
+9,human hair,3,27,202.00
+9,human hair,3,28,202.04
+9,human hair,3,29,201.61
+9,human hair,3,30,202.06
+9,human hair,3,31,204.20
+9,human hair,3,32,202.02
+9,human hair,3,33,202.02
+9,human hair,3,34,202.04
+9,human hair,3,35,201.59
+9,human hair,3,36,202.04
+9,human hair,3,37,202.47
+9,human hair,3,38,202.49
+9,human hair,3,39,202.02
+9,human hair,3,40,202.91
+9,human hair,3,41,203.79
+9,human hair,3,42,201.59
+9,human hair,3,43,202.47
+9,human hair,3,44,202.02
+9,human hair,3,45,202.47
+9,human hair,3,46,202.49
+9,human hair,3,47,202.90
+9,human hair,3,48,202.90
+9,human hair,3,49,201.61
+9,human hair,3,50,202.04
+10,human hair,4,1,202.69
+10,human hair,4,2,202.69
+10,human hair,4,3,203.12
+10,human hair,4,4,203.55
+10,human hair,4,5,202.22
+10,human hair,4,6,202.24
+10,human hair,4,7,203.12
+10,human hair,4,8,202.69
+10,human hair,4,9,202.24
+10,human hair,4,10,203.12
+10,human hair,4,11,203.12
+10,human hair,4,12,203.55
+10,human hair,4,13,202.24
+10,human hair,4,14,203.12
+10,human hair,4,15,202.65
+10,human hair,4,16,203.12
+10,human hair,4,17,202.67
+10,human hair,4,18,203.98
+10,human hair,4,19,202.69
+10,human hair,4,20,202.24
+10,human hair,4,21,202.22
+10,human hair,4,22,203.55
+10,human hair,4,23,202.67
+10,human hair,4,24,203.10
+10,human hair,4,25,202.22
+10,human hair,4,26,202.67
+10,human hair,4,27,203.10
+10,human hair,4,28,204.00
+10,human hair,4,29,202.69
+10,human hair,4,30,202.67
+10,human hair,4,31,204.86
+10,human hair,4,32,203.98
+10,human hair,4,33,202.67
+10,human hair,4,34,202.69
+10,human hair,4,35,203.12
+10,human hair,4,36,203.12
+10,human hair,4,37,202.24
+10,human hair,4,38,203.12
+10,human hair,4,39,202.69
+10,human hair,4,40,202.67
+10,human hair,4,41,203.98
+10,human hair,4,42,202.67
+10,human hair,4,43,202.69
+10,human hair,4,44,202.22
+10,human hair,4,45,203.98
+10,human hair,4,46,204.00
+10,human hair,4,47,202.69
+10,human hair,4,48,203.14
+10,human hair,4,49,203.57
+10,human hair,4,50,203.57
+11,polyester,2,1,100.48
+11,polyester,2,2,100.48
+11,polyester,2,3,100.48
+11,polyester,2,4,101.34
+11,polyester,2,5,101.34
+11,polyester,2,6,100.48
+11,polyester,2,7,101.34
+11,polyester,2,8,100.48
+11,polyester,2,9,101.34
+11,polyester,2,10,100.46
+11,polyester,2,11,100.48
+11,polyester,2,12,100.46
+11,polyester,2,13,100.48
+11,polyester,2,14,100.48
+11,polyester,2,15,100.46
+11,polyester,2,16,100.48
+11,polyester,2,17,100.46
+11,polyester,2,18,100.46
+11,polyester,2,19,100.48
+11,polyester,2,20,100.48
+11,polyester,2,21,100.46
+11,polyester,2,22,100.91
+11,polyester,2,23,101.32
+11,polyester,2,24,100.48
+11,polyester,2,25,100.88
+11,polyester,2,26,100.46
+11,polyester,2,27,101.32
+11,polyester,2,28,101.34
+11,polyester,2,29,100.48
+11,polyester,2,30,100.48
+11,polyester,2,31,100.88
+11,polyester,2,32,100.46
+11,polyester,2,33,100.46
+11,polyester,2,34,100.46
+11,polyester,2,35,100.91
+11,polyester,2,36,100.48
+11,polyester,2,37,100.91
+11,polyester,2,38,101.34
+11,polyester,2,39,100.88
+11,polyester,2,40,101.34
+11,polyester,2,41,101.32
+11,polyester,2,42,100.91
+11,polyester,2,43,100.48
+11,polyester,2,44,100.88
+11,polyester,2,45,100.46
+11,polyester,2,46,100.91
+11,polyester,2,47,100.46
+11,polyester,2,48,100.46
+11,polyester,2,49,101.75
+11,polyester,2,50,100.50
+12,polyester,3,1,101.32
+12,polyester,3,2,100.46
+12,polyester,3,3,100.46
+12,polyester,3,4,101.32
+12,polyester,3,5,101.32
+12,polyester,3,6,100.46
+12,polyester,3,7,100.88
+12,polyester,3,8,100.48
+12,polyester,3,9,100.48
+12,polyester,3,10,100.48
+12,polyester,3,11,100.46
+12,polyester,3,12,100.46
+12,polyester,3,13,100.48
+12,polyester,3,14,100.46
+12,polyester,3,15,100.48
+12,polyester,3,16,101.34
+12,polyester,3,17,100.91
+12,polyester,3,18,100.48
+12,polyester,3,19,100.50
+12,polyester,3,20,100.48
+12,polyester,3,21,100.50
+12,polyester,3,22,101.34
+12,polyester,3,23,100.48
+12,polyester,3,24,101.34
+12,polyester,3,25,100.48
+12,polyester,3,26,100.50
+12,polyester,3,27,100.50
+12,polyester,3,28,100.50
+12,polyester,3,29,100.48
+12,polyester,3,30,100.48
+12,polyester,3,31,100.48
+12,polyester,3,32,100.48
+12,polyester,3,33,100.48
+12,polyester,3,34,100.88
+12,polyester,3,35,100.48
+12,polyester,3,36,100.46
+12,polyester,3,37,100.48
+12,polyester,3,38,100.91
+12,polyester,3,39,100.48
+12,polyester,3,40,101.32
+12,polyester,3,41,100.50
+12,polyester,3,42,100.08
+12,polyester,3,43,100.48
+12,polyester,3,44,100.07
+12,polyester,3,45,100.50
+12,polyester,3,46,100.50
+12,polyester,3,47,101.34
+12,polyester,3,48,100.48
+12,polyester,3,49,100.48
+12,polyester,3,50,100.88
+13,polyester,4,1,100.48
+13,polyester,4,2,100.50
+13,polyester,4,3,100.46
+13,polyester,4,4,100.88
+13,polyester,4,5,100.48
+13,polyester,4,6,100.48
+13,polyester,4,7,101.34
+13,polyester,4,8,100.48
+13,polyester,4,9,100.48
+13,polyester,4,10,100.48
+13,polyester,4,11,100.46
+13,polyester,4,12,100.48
+13,polyester,4,13,100.91
+13,polyester,4,14,100.48
+13,polyester,4,15,100.46
+13,polyester,4,16,100.46
+13,polyester,4,17,100.50
+13,polyester,4,18,100.50
+13,polyester,4,19,100.88
+13,polyester,4,20,100.88
+13,polyester,4,21,101.34
+13,polyester,4,22,100.46
+13,polyester,4,23,100.88
+13,polyester,4,24,100.46
+13,polyester,4,25,100.88
+13,polyester,4,26,100.50
+13,polyester,4,27,100.48
+13,polyester,4,28,100.48
+13,polyester,4,29,100.48
+13,polyester,4,30,100.50
+13,polyester,4,31,100.91
+13,polyester,4,32,101.32
+13,polyester,4,33,100.48
+13,polyester,4,34,100.46
+13,polyester,4,35,100.46
+13,polyester,4,36,101.34
+13,polyester,4,37,101.34
+13,polyester,4,38,100.46
+13,polyester,4,39,100.48
+13,polyester,4,40,100.48
+13,polyester,4,41,100.88
+13,polyester,4,42,100.48
+13,polyester,4,43,100.91
+13,polyester,4,44,100.46
+13,polyester,4,45,100.48
+13,polyester,4,46,100.91
+13,polyester,4,47,100.46
+13,polyester,4,48,100.48
+13,polyester,4,49,100.88
+13,polyester,4,50,101.32
+14,ceramic fibre,2,1,79.47
+14,ceramic fibre,2,2,79.47
+14,ceramic fibre,2,3,79.47
+14,ceramic fibre,2,4,79.87
+14,ceramic fibre,2,5,79.47
+14,ceramic fibre,2,6,79.47
+14,ceramic fibre,2,7,79.46
+14,ceramic fibre,2,8,80.26
+14,ceramic fibre,2,9,79.47
+14,ceramic fibre,2,10,79.85
+14,ceramic fibre,2,11,79.85
+14,ceramic fibre,2,12,79.46
+14,ceramic fibre,2,13,79.87
+14,ceramic fibre,2,14,79.87
+14,ceramic fibre,2,15,79.85
+14,ceramic fibre,2,16,79.47
+14,ceramic fibre,2,17,79.46
+14,ceramic fibre,2,18,79.47
+14,ceramic fibre,2,19,79.47
+14,ceramic fibre,2,20,79.47
+14,ceramic fibre,2,21,79.85
+14,ceramic fibre,2,22,79.87
+14,ceramic fibre,2,23,79.47
+14,ceramic fibre,2,24,79.46
+14,ceramic fibre,2,25,79.46
+14,ceramic fibre,2,26,79.87
+14,ceramic fibre,2,27,79.47
+14,ceramic fibre,2,28,79.47
+14,ceramic fibre,2,29,80.31
+14,ceramic fibre,2,30,79.87
+14,ceramic fibre,2,31,79.85
+14,ceramic fibre,2,32,80.31
+14,ceramic fibre,2,33,79.88
+14,ceramic fibre,2,34,79.85
+14,ceramic fibre,2,35,79.47
+14,ceramic fibre,2,36,79.87
+14,ceramic fibre,2,37,80.73
+14,ceramic fibre,2,38,79.87
+14,ceramic fibre,2,39,79.47
+14,ceramic fibre,2,40,79.46
+14,ceramic fibre,2,41,79.85
+14,ceramic fibre,2,42,80.31
+14,ceramic fibre,2,43,79.85
+14,ceramic fibre,2,44,79.87
+14,ceramic fibre,2,45,79.87
+14,ceramic fibre,2,46,80.31
+14,ceramic fibre,2,47,80.30
+14,ceramic fibre,2,48,80.74
+14,ceramic fibre,2,49,79.87
+14,ceramic fibre,2,50,79.88
+15,ceramic fibre,3,1,79.87
+15,ceramic fibre,3,2,79.87
+15,ceramic fibre,3,3,80.31
+15,ceramic fibre,3,4,79.87
+15,ceramic fibre,3,5,79.49
+15,ceramic fibre,3,6,79.47
+15,ceramic fibre,3,7,79.87
+15,ceramic fibre,3,8,80.33
+15,ceramic fibre,3,9,79.49
+15,ceramic fibre,3,10,79.87
+15,ceramic fibre,3,11,79.49
+15,ceramic fibre,3,12,79.47
+15,ceramic fibre,3,13,79.47
+15,ceramic fibre,3,14,80.33
+15,ceramic fibre,3,15,79.88
+15,ceramic fibre,3,16,79.47
+15,ceramic fibre,3,17,79.49
+15,ceramic fibre,3,18,79.49
+15,ceramic fibre,3,19,80.33
+15,ceramic fibre,3,20,80.33
+15,ceramic fibre,3,21,79.49
+15,ceramic fibre,3,22,79.49
+15,ceramic fibre,3,23,79.47
+15,ceramic fibre,3,24,80.33
+15,ceramic fibre,3,25,79.49
+15,ceramic fibre,3,26,79.87
+15,ceramic fibre,3,27,79.49
+15,ceramic fibre,3,28,79.49
+15,ceramic fibre,3,29,79.49
+15,ceramic fibre,3,30,79.88
+15,ceramic fibre,3,31,80.33
+15,ceramic fibre,3,32,79.87
+15,ceramic fibre,3,33,80.33
+15,ceramic fibre,3,34,79.90
+15,ceramic fibre,3,35,80.33
+15,ceramic fibre,3,36,79.88
+15,ceramic fibre,3,37,79.88
+15,ceramic fibre,3,38,79.49
+15,ceramic fibre,3,39,80.33
+15,ceramic fibre,3,40,80.35
+15,ceramic fibre,3,41,79.88
+15,ceramic fibre,3,42,79.49
+15,ceramic fibre,3,43,79.49
+15,ceramic fibre,3,44,80.76
+15,ceramic fibre,3,45,79.88
+15,ceramic fibre,3,46,79.88
+15,ceramic fibre,3,47,80.35
+15,ceramic fibre,3,48,80.35
+15,ceramic fibre,3,49,79.49
+15,ceramic fibre,3,50,79.49
+16,ceramic fibre,4,1,79.88
+16,ceramic fibre,4,2,79.49
+16,ceramic fibre,4,3,79.51
+16,ceramic fibre,4,4,79.49
+16,ceramic fibre,4,5,79.49
+16,ceramic fibre,4,6,79.49
+16,ceramic fibre,4,7,79.88
+16,ceramic fibre,4,8,79.88
+16,ceramic fibre,4,9,79.49
+16,ceramic fibre,4,10,79.90
+16,ceramic fibre,4,11,79.49
+16,ceramic fibre,4,12,79.51
+16,ceramic fibre,4,13,79.49
+16,ceramic fibre,4,14,79.49
+16,ceramic fibre,4,15,80.35
+16,ceramic fibre,4,16,80.35
+16,ceramic fibre,4,17,80.35
+16,ceramic fibre,4,18,79.49
+16,ceramic fibre,4,19,79.88
+16,ceramic fibre,4,20,79.49
+16,ceramic fibre,4,21,79.88
+16,ceramic fibre,4,22,80.30
+16,ceramic fibre,4,23,79.88
+16,ceramic fibre,4,24,79.88
+16,ceramic fibre,4,25,79.49
+16,ceramic fibre,4,26,79.49
+16,ceramic fibre,4,27,79.51
+16,ceramic fibre,4,28,79.88
+16,ceramic fibre,4,29,79.88
+16,ceramic fibre,4,30,79.49
+16,ceramic fibre,4,31,79.88
+16,ceramic fibre,4,32,79.49
+16,ceramic fibre,4,33,79.88
+16,ceramic fibre,4,34,79.88
+16,ceramic fibre,4,35,79.90
+16,ceramic fibre,4,36,79.90
+16,ceramic fibre,4,37,79.90
+16,ceramic fibre,4,38,80.74
+16,ceramic fibre,4,39,79.49
+16,ceramic fibre,4,40,79.51
+16,ceramic fibre,4,41,79.87
+16,ceramic fibre,4,42,79.49
+16,ceramic fibre,4,43,79.88
+16,ceramic fibre,4,44,79.49
+16,ceramic fibre,4,45,79.88
+16,ceramic fibre,4,46,79.47
+16,ceramic fibre,4,47,80.33
+16,ceramic fibre,4,48,79.88
+16,ceramic fibre,4,49,79.87
+16,ceramic fibre,4,50,79.90

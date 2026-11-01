@@ -1,0 +1,878 @@
+// Weboberfläche der Messstation (wird vom Sketch eingebunden).
+// Bearbeiten: index.html ändern und hier zwischen R"HTML( und )HTML" einfügen.
+#pragma once
+#include <pgmspace.h>
+const char SEITE[] PROGMEM = R"HTML(<!doctype html>
+<html lang="de"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Laserbeugung · Messstation</title>
+<style>
+:root{
+  --bg:#eceff1;--fl:#ffffff;--fl2:#f4f6f7;--tx:#162026;--mu:#5c6a73;--li:#d3dade;
+  --ak:#c3272e;--ok:#17924c;--okh:#d6f2e1;--wa:#c96a05;--wah:#fdecd6;
+  --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;
+  --sans:system-ui,-apple-system,"Segoe UI",Roboto,sans-serif;
+}
+@media (prefers-color-scheme:dark){:root{
+  --bg:#0e1316;--fl:#172025;--fl2:#1e282e;--tx:#e3eaee;--mu:#93a1aa;--li:#2a363d;
+  --ak:#ff5a61;--ok:#35c574;--okh:#163a26;--wa:#f5a524;--wah:#3d2a0c;color-scheme:dark}}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{background:var(--bg);color:var(--tx);font:15px/1.5 var(--sans)}
+header{position:sticky;top:0;z-index:5;background:var(--fl);border-bottom:1px solid var(--li);
+  padding:10px max(16px,env(safe-area-inset-right)) 0 max(16px,env(safe-area-inset-left))}
+.kopf{display:flex;align-items:center;gap:10px;max-width:1000px;margin:0 auto}
+.kopf h1{font-size:1rem;margin:0;flex:1;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.kopf h1 span{color:var(--mu);font-weight:500}
+.pill{font:600 .75rem var(--mono);padding:3px 10px;border-radius:99px;background:var(--fl2);color:var(--mu);white-space:nowrap}
+.pill.an{background:var(--ak);color:#fff}
+.pill.an::before{content:"";display:inline-block;width:7px;height:7px;border-radius:50%;background:#fff;margin-right:6px;vertical-align:1px;animation:blink 1.2s infinite}
+@keyframes blink{50%{opacity:.2}}
+nav{display:flex;gap:2px;max-width:1000px;margin:6px auto 0;overflow-x:auto;scrollbar-width:none}
+nav button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 12px;font:600 .9rem var(--sans);color:var(--mu);cursor:pointer;white-space:nowrap}
+nav button[aria-selected="true"]{color:var(--tx);border-bottom-color:var(--ak)}
+main{max-width:1000px;margin:0 auto;padding:14px max(16px,env(safe-area-inset-right)) 48px max(16px,env(safe-area-inset-left))}
+section.tab{display:flex;flex-direction:column;gap:14px}
+.karte{background:var(--fl);border:1px solid var(--li);border-radius:10px;padding:14px 16px;min-width:0}
+h2{font-size:.74rem;letter-spacing:.09em;text-transform:uppercase;color:var(--mu);margin:0 0 10px;font-weight:700}
+h3{font-size:1rem;margin:0 0 4px}
+.klein{font-size:.84rem;color:var(--mu)}
+.zeile{display:flex;gap:10px;align-items:center;flex-wrap:wrap}
+.zeile > input{flex:1;min-width:180px}
+.raster{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:10px 14px}
+.zwei{display:grid;grid-template-columns:repeat(auto-fit,minmax(320px,1fr));gap:14px}
+.zwei > *{min-width:0}
+label{display:flex;flex-direction:column;gap:3px;font-size:.82rem;color:var(--mu)}
+input,select{font:inherit;color:var(--tx);background:var(--fl2);border:1px solid var(--li);border-radius:7px;padding:8px 10px;min-width:0}
+input:focus,select:focus,button:focus-visible{outline:2px solid var(--ak);outline-offset:1px}
+button{font:600 .92rem var(--sans);border:1px solid var(--li);background:var(--fl2);color:var(--tx);border-radius:8px;padding:9px 14px;cursor:pointer}
+button:hover{border-color:var(--mu)}
+button.haupt{background:var(--ak);border-color:var(--ak);color:#fff}
+button.stopp{background:var(--tx);border-color:var(--tx);color:var(--fl)}
+button.klein{padding:5px 10px;font-size:.8rem}
+button:disabled{opacity:.45;cursor:not-allowed}
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border-radius:99px;padding:7px 14px;font-weight:600}
+.chip[aria-pressed="true"]{background:var(--tx);color:var(--fl);border-color:var(--tx)}
+.aufName{display:flex;flex-direction:column;flex:1;min-width:200px}
+/* Abstand */
+.anzeige{display:flex;align-items:baseline;justify-content:space-between;gap:12px;flex-wrap:wrap}
+.gross{font:700 3rem/1 var(--mono);font-variant-numeric:tabular-nums;letter-spacing:-.02em}
+.gross small{font-size:1.1rem;color:var(--mu);font-weight:500;margin-left:4px}
+.ziel{font-weight:700;padding:6px 14px;border-radius:99px;background:var(--wah);color:var(--wa);transition:background .3s,color .3s}
+.ziel.ok{background:var(--okh);color:var(--ok)}
+.ziel.aus{background:var(--fl2);color:var(--mu)}
+.bandRahmen{margin:12px 0 4px;border-radius:10px;overflow:hidden;background:#2a2f33;padding:4px 0}
+#band{display:block;width:100%;height:100px}
+.gauge{margin-top:12px}
+.gTrack{position:relative;height:18px;border-radius:99px;background:var(--fl2);border:1px solid var(--li);overflow:hidden}
+.gZone{position:absolute;top:0;bottom:0;z-index:2;background:rgba(23,146,76,.16);border-left:2px solid var(--ok);border-right:2px solid var(--ok)}
+.gFill{position:absolute;left:0;top:0;bottom:0;background:var(--wa);opacity:.85;transition:background .3s}
+.gauge.drin .gFill{background:var(--ok);opacity:1}
+.gauge.drin .gTrack{box-shadow:0 0 0 3px var(--okh)}
+.gMark{position:absolute;z-index:3;top:-2px;bottom:-2px;width:3px;background:var(--tx);margin-left:-1.5px}
+.gSkala{display:flex;justify-content:space-between;font:500 .75rem var(--mono);color:var(--mu);margin-top:3px}
+#spark{display:block;width:100%;height:70px;margin-top:10px}
+.werte{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:6px 14px;margin-top:10px;font-size:.84rem}
+.werte div{display:flex;flex-direction:column}
+.werte b{font:600 .95rem var(--mono);color:var(--tx)}
+.fortschritt{height:4px;border-radius:2px;background:var(--fl2);overflow:hidden;margin-top:10px}
+.fortschritt i{display:block;height:100%;width:0;background:var(--ak)}
+.fortschritt.laeuft i{animation:fuellen 3.6s linear forwards}
+@keyframes fuellen{to{width:100%}}
+/* Tabellen */
+.scroll{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.84rem;font-variant-numeric:tabular-nums}
+th,td{text-align:left;padding:6px 8px;border-bottom:1px solid var(--li);white-space:nowrap}
+th{font-size:.78rem;color:var(--mu);font-weight:700}
+td input{width:84px;padding:4px 6px}
+td.zahl,th.zahl{text-align:right}
+.leer{color:var(--mu);font-size:.88rem;padding:10px 0}
+.dia svg{display:block;width:100%;height:auto;border-radius:6px;border:1px solid var(--li)}
+.diaKopf{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap;margin-bottom:8px}
+.knoepfe{display:flex;gap:6px;flex-wrap:wrap}
+.box{border:1px solid var(--li);border-radius:8px;padding:10px 12px;background:var(--fl2);margin-top:10px}
+.ok{color:var(--ok)}
+.log{font:.82rem/1.6 var(--mono);max-height:220px;overflow:auto;margin:8px 0 0;padding:0;list-style:none}
+.schalter{display:flex;align-items:center;gap:8px;font-size:.9rem;color:var(--tx);flex-direction:row}
+.schalter input{width:18px;height:18px}
+#toast{position:fixed;left:50%;bottom:calc(18px + env(safe-area-inset-bottom));transform:translate(-50%,30px);opacity:0;
+  background:var(--tx);color:var(--fl);padding:10px 16px;border-radius:9px;font-weight:600;transition:.25s;pointer-events:none;max-width:90vw;z-index:9}
+#toast.zeig{opacity:1;transform:translate(-50%,0)}
+#toast.warn{background:var(--wa);color:#fff}
+#toast.gut{background:var(--ok);color:#fff}
+[hidden]{display:none!important}
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style></head><body>
+<header>
+  <div class="kopf"><h1>Laserbeugung <span>· Messstation</span></h1><span class="pill" id="recPill">keine Aufnahme</span></div>
+  <nav role="tablist">
+    <button role="tab" data-tab="messen" aria-selected="true">Messen</button>
+    <button role="tab" data-tab="auswertung" aria-selected="false">Auswertung</button>
+    <button role="tab" data-tab="empfang" aria-selected="false">PC-Empfang</button>
+    <button role="tab" data-tab="einstellungen" aria-selected="false">Setup</button>
+  </nav>
+</header>
+<main>
+
+<!-- ======================= MESSEN ======================= -->
+<section class="tab" id="tab-messen">
+  <div class="karte" id="aufnahmeKarte"></div>
+
+  <div class="karte">
+    <h2>Faser</h2>
+    <div class="chips" id="faserChips"></div>
+    <p class="klein" id="faserInfo" style="margin:8px 0 0"></p>
+  </div>
+
+  <div class="karte">
+    <h2>Abstand Faser → Wand</h2>
+    <div class="anzeige">
+      <div class="gross" id="grossL">–<small>cm</small></div>
+      <div class="ziel aus" id="zielText">warte auf Sensor …</div>
+    </div>
+    <div class="bandRahmen"><canvas id="band" aria-label="Maßband mit aktuellem Abstand und Zielzone"></canvas></div>
+    <div class="gauge" id="gauge">
+      <div class="gTrack"><div class="gZone" id="gZone"></div><div class="gFill" id="gFill"></div><div class="gMark" id="gMark"></div></div>
+      <div class="gSkala"><span>0 cm</span><span id="gMitte"></span><span id="gMax"></span></div>
+    </div>
+    <canvas id="spark" aria-label="Verlauf der letzten 60 Sekunden"></canvas>
+    <div class="werte" id="liveWerte"></div>
+  </div>
+
+  <div class="karte">
+    <h2>Messung aufnehmen</h2>
+    <div class="raster">
+      <label>Probe-Nr.<input id="probe" inputmode="numeric"></label>
+      <label>L mit Zollstock in cm (Gegenprobe)<input id="lref" inputmode="decimal" placeholder="optional"></label>
+      <label>Notiz<input id="notiz" placeholder="z. B. Doppelfaden"></label>
+    </div>
+    <div class="zeile" style="margin-top:12px">
+      <button class="haupt" id="bMessen" disabled>Messung aufnehmen (50 Pings)</button>
+      <span class="klein" id="messHinweis"></span>
+    </div>
+    <div class="fortschritt" id="fortschritt"><i></i></div>
+  </div>
+
+  <div class="karte" id="letzteKarte" hidden>
+    <h2>Letzte Messung</h2>
+    <div class="zwei">
+      <div id="letzteWerte"></div>
+      <div class="dia" id="letzteHisto"></div>
+    </div>
+  </div>
+
+  <div class="karte">
+    <h2>Messungen dieser Aufnahme</h2>
+    <div class="scroll" id="sitzTabelle"></div>
+  </div>
+</section>
+
+<!-- ======================= AUSWERTUNG ======================= -->
+<section class="tab" id="tab-auswertung" hidden>
+  <div class="karte">
+    <h2>Aufnahme</h2>
+    <div class="zeile">
+      <select id="selSession" style="flex:1;min-width:220px"></select>
+      <button id="bNeuLaden">Aktualisieren</button>
+    </div>
+    <div class="zeile" style="margin-top:10px">
+      <span class="klein">L für die Berechnung von d:</span>
+      <label class="schalter"><input type="radio" name="lq" value="us" checked> Ultraschall</label>
+      <label class="schalter"><input type="radio" name="lq" value="zs"> Zollstock (falls eingetragen)</label>
+    </div>
+    <p class="klein" id="sessInfo" style="margin:8px 0 0"></p>
+    <div class="knoepfe" style="margin-top:10px">
+      <button class="klein" data-export="messungen">CSV Messungen</button>
+      <button class="klein" data-export="zusammenfassung">CSV Zusammenfassung</button>
+      <button class="klein" data-export="einzelwerte">CSV Einzelwerte</button>
+      <button class="klein" data-export="json">JSON Rohdaten</button>
+      <button class="klein" data-export="alles">Alles herunterladen</button>
+    </div>
+  </div>
+
+  <div class="karte">
+    <h2>Beugungsbild auswerten</h2>
+    <p class="klein" style="margin:0 0 8px">Am Foto den Abstand zwischen dem linken und dem rechten Minimum derselben Ordnung m messen und eintragen.
+      Berechnet wird d = m·λ / sin(arctan(x/L)) mit x = Abstand/2; daneben zum Vergleich die Kleinwinkelnäherung d = m·λ·L / x.</p>
+    <div class="scroll" id="ausTabelle"></div>
+  </div>
+
+  <div class="karte">
+    <h2>Zusammenfassung je Faser</h2>
+    <div class="scroll" id="zusTabelle"></div>
+  </div>
+
+  <div class="karte">
+    <div class="diaKopf"><h3>Abb. A · Faserdurchmesser im Vergleich</h3>
+      <div class="knoepfe"><button class="klein" data-dia="1" data-fmt="png">PNG</button><button class="klein" data-dia="1" data-fmt="svg">SVG</button></div></div>
+    <div class="dia" id="dia1"></div>
+  </div>
+  <div class="zwei">
+    <div class="karte">
+      <div class="diaKopf"><h3>Abb. B · Validierung L</h3>
+        <div class="knoepfe"><button class="klein" data-dia="2" data-fmt="png">PNG</button><button class="klein" data-dia="2" data-fmt="svg">SVG</button></div></div>
+      <div class="dia" id="dia2"></div>
+    </div>
+    <div class="karte">
+      <div class="diaKopf"><h3>Abb. C · Streuung einer Messung</h3>
+        <div class="knoepfe"><select id="selHisto"></select><button class="klein" data-dia="3" data-fmt="png">PNG</button><button class="klein" data-dia="3" data-fmt="svg">SVG</button></div></div>
+      <div class="dia" id="dia3"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ======================= PC-EMPFANG ======================= -->
+<section class="tab" id="tab-empfang" hidden>
+  <div class="karte">
+    <h2>PC-Empfang</h2>
+    <p style="margin:0 0 10px">Diese Seite auf dem PC offen lassen. Sobald am Handy eine Aufnahme mit „Beenden &amp; an PC senden“ abgeschlossen wird, lädt der PC die Dateien automatisch in den Download-Ordner.</p>
+    <div class="raster">
+      <label class="schalter"><input type="checkbox" id="eCsv" checked> CSV Messungen + Zusammenfassung</label>
+      <label class="schalter"><input type="checkbox" id="eEinzel" checked> CSV Einzelwerte</label>
+      <label class="schalter"><input type="checkbox" id="eJson" checked> JSON Rohdaten</label>
+      <label class="schalter"><input type="checkbox" id="eDia" checked> Diagramme als PNG</label>
+    </div>
+    <div class="zeile" style="margin-top:12px">
+      <button class="haupt" id="bEmpfang">Empfang starten</button>
+      <span class="klein" id="empfStatus">Empfang aus</span>
+    </div>
+    <p class="klein" style="margin:8px 0 0">Der Browser fragt beim ersten Mal, ob die Seite mehrere Dateien herunterladen darf. Bitte erlauben.</p>
+    <ul class="log" id="empfLog"></ul>
+  </div>
+  <div class="karte">
+    <h2>Alle Aufnahmen</h2>
+    <div class="scroll" id="empfListe"></div>
+  </div>
+</section>
+
+<!-- ======================= EINSTELLUNGEN ======================= -->
+<section class="tab" id="tab-einstellungen" hidden>
+  <div class="karte">
+    <h2>Kalibrieren</h2>
+    <p class="klein" style="margin:0 0 8px">Abstand Faser → Wand mit dem Zollstock messen und eintragen. Die Station speichert den Versatz zwischen Sensor und Faser dauerhaft.</p>
+    <div class="zeile"><input id="kref" inputmode="decimal" placeholder="L mit Zollstock in cm"><button class="haupt" id="bKalib">Kalibrieren</button></div>
+    <p class="klein" id="kalibErg" style="margin:8px 0 0"></p>
+  </div>
+  <div class="karte">
+    <h2>Fasern und Zielabstände</h2>
+    <p class="klein" style="margin:0 0 8px">Soll-L und Toleranz bestimmen die grüne Zone auf dem Maßband. λ ist die Wellenlänge des Lasers in nm und wird für die Auswertung vorgeschlagen.</p>
+    <div class="scroll" id="faserEditor"></div>
+    <div class="knoepfe" style="margin-top:10px">
+      <button class="klein" id="bFaserNeu">Faser hinzufügen</button>
+      <button class="klein haupt" id="bFaserSpeichern">Speichern</button>
+      <button class="klein" id="bFaserStandard">Vorschläge wiederherstellen</button>
+    </div>
+  </div>
+  <div class="karte">
+    <h2>WLAN</h2>
+    <p class="klein" style="margin:0 0 8px" id="netzInfo"></p>
+    <div class="raster">
+      <label>WLAN-Name (SSID)<input id="wSsid" autocomplete="off"></label>
+      <label>Passwort<input id="wPass" type="password" autocomplete="off"></label>
+    </div>
+    <div class="zeile" style="margin-top:10px"><button id="bWlan">Speichern und neu starten</button>
+      <span class="klein">Leer lassen = nur eigenes WLAN „Laserbeugung“.</span></div>
+  </div>
+  <div class="karte">
+    <h2>Speicher und Aufnahmen</h2>
+    <p class="klein" id="speicherInfo" style="margin:0 0 8px"></p>
+    <div class="scroll" id="sessListe"></div>
+  </div>
+</section>
+</main>
+<div id="toast" role="status"></div>
+
+<script>
+'use strict';
+const $=s=>document.querySelector(s), $$=s=>[...document.querySelectorAll(s)];
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const kz=(v,n=1)=>(v==null||!isFinite(v))?'–':Number(v).toFixed(n).replace('.',',');
+const zahl=s=>{if(s==null)return null;s=String(s).trim().replace(',','.');if(s==='')return null;const v=parseFloat(s);return isFinite(v)?v:null};
+const jetzt=()=>new Date().toLocaleString('de-DE');
+const warte=ms=>new Promise(r=>setTimeout(r,ms));
+const RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+async function getJ(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.json()}
+async function getT(u){const r=await fetch(u,{cache:'no-store'});if(!r.ok)throw new Error(r.status);return r.text()}
+async function post(u,d){const r=await fetch(u,{method:'POST',body:new URLSearchParams(d||{})});return r.json()}
+function toast(t,art){const e=$('#toast');e.textContent=t;e.className='zeig '+(art||'');clearTimeout(toast.t);toast.t=setTimeout(()=>e.className='',3400)}
+function lsGet(k){try{return localStorage.getItem(k)}catch(e){return null}}
+function lsSet(k,v){try{localStorage.setItem(k,v)}catch(e){}}
+
+/* Vorschläge: Soll-L so gewählt, dass das 1. Minimum einige cm neben der Mitte liegt */
+const STD_FASERN=[
+  {name:'Spinnenseide (Abseilfaden)',soll:40,tol:2,lambda:650},
+  {name:'Menschenhaar',soll:200,tol:5,lambda:650},
+  {name:'Polyester',soll:100,tol:3,lambda:650},
+  {name:'Keramikfaser',soll:80,tol:3,lambda:650},
+  {name:'Angelschnur (Referenz)',soll:200,tol:5,lambda:650}
+];
+const S={fasern:STD_FASERN.map(f=>({...f})),faser:0,status:{},live:null,anzeigeL:null,verlauf:[],
+  messend:false,sitzung:null,inZone:false,letzteBeendet:null,sessions:[],ausw:null,auswId:null,lq:'us'};
+const aktFaser=()=>S.fasern[S.faser]||S.fasern[0];
+const lambdaVon=name=>{const f=S.fasern.find(x=>x.name===name);return f&&f.lambda?f.lambda:650};
+
+/* ---------------- Tabs ---------------- */
+function tabAktiv(){return ($$('nav button').find(b=>b.getAttribute('aria-selected')==='true')||{}).dataset.tab||'messen'}
+function zeigeTab(name){
+  if(!$('#tab-'+name))name='messen';
+  $$('nav button').forEach(b=>b.setAttribute('aria-selected',b.dataset.tab===name?'true':'false'));
+  $$('section.tab').forEach(s=>s.hidden=s.id!=='tab-'+name);
+  if(location.hash!=='#'+name)history.replaceState(null,'','#'+name);
+  if(name==='auswertung')auswertungOeffnen();
+  if(name==='empfang')listeAktualisieren();
+  if(name==='einstellungen')einstellungenOeffnen();
+}
+$$('nav button').forEach(b=>b.onclick=()=>zeigeTab(b.dataset.tab));
+addEventListener('hashchange',()=>zeigeTab(location.hash.slice(1)));
+
+/* ---------------- Daten einer Aufnahme ---------------- */
+function parseSession(txt){
+  const s={meta:{},messungen:[],ende:null};const ausw={};
+  for(const z of txt.split('\n')){
+    if(!z.trim())continue;let o;try{o=JSON.parse(z)}catch(e){continue}
+    if(o.typ==='meta')s.meta=o;else if(o.typ==='messung')s.messungen.push(o);
+    else if(o.typ==='auswertung')ausw[o.nr]=o;else if(o.typ==='ende')s.ende=o;
+  }
+  for(const m of s.messungen){const a=ausw[m.nr];m.abst=a?a.abst:null;m.m=a?a.m:null;m.lambda=a?a.lambda:null}
+  return s;
+}
+async function ladeSession(id){return parseSession(await getT('/api/session?id='+id))}
+
+function dBerechnen(me,lq){
+  const L=(lq==='zs'&&me.lref>0)?me.lref:me.L;const ab=me.abst;
+  if(!(L>0&&ab>0))return null;
+  const m=me.m||1,lam=me.lambda||lambdaVon(me.faser),x=ab/2,th=Math.atan(x/L);
+  return {L,x,m,lam,theta:th*180/Math.PI,exakt:m*lam*1e-3/Math.sin(th),klein:m*lam*1e-3*L/x};
+}
+const mittel=a=>a.reduce((s,v)=>s+v,0)/a.length;
+const stdabw=a=>{if(a.length<2)return null;const m=mittel(a);return Math.sqrt(a.reduce((s,v)=>s+(v-m)*(v-m),0)/(a.length-1))};
+function gruppen(s,lq){
+  const ord=S.fasern.map(f=>f.name),map=new Map();
+  for(const me of s.messungen){const d=dBerechnen(me,lq);if(!d)continue;
+    if(!map.has(me.faser))map.set(me.faser,[]);map.get(me.faser).push({d:d.exakt,klein:d.klein,me})}
+  return [...map.entries()].map(([faser,werte])=>({faser,werte}))
+    .sort((a,b)=>{const ia=ord.indexOf(a.faser),ib=ord.indexOf(b.faser);return (ia<0?99:ia)-(ib<0?99:ib)});
+}
+
+/* ---------------- Status / Aufnahme ---------------- */
+async function statusLaden(){try{S.status=await getJ('/api/status')}catch(e){}renderRec()}
+function renderRec(){
+  const p=$('#recPill'),a=S.status.aktiv;
+  if(a!=null){p.className='pill an';p.textContent='Aufnahme '+a+' · '+(S.sitzung?S.sitzung.messungen.length:0)}
+  else{p.className='pill';p.textContent='keine Aufnahme'}
+  $('#bMessen').disabled=(a==null)||S.messend;
+  $('#messHinweis').textContent=a==null?'Erst oben eine Aufnahme starten.':'';
+}
+function namensVorschlag(){return 'Messreihe '+new Date().toLocaleDateString('de-DE')}
+function renderAufnahme(){
+  const k=$('#aufnahmeKarte'),a=S.status.aktiv;
+  if(a==null){
+    k.innerHTML=`<h2>Aufnahme</h2><div class="zeile"><input id="sessName" value="${esc(namensVorschlag())}" aria-label="Name der Aufnahme">
+      <button class="haupt" id="bStart">Aufnahme starten</button></div>
+      <p class="klein" style="margin:8px 0 0">Alle Messungen landen in dieser Aufnahme. Beim Beenden wird sie an den PC gesendet (Tab „PC-Empfang“).</p><div id="endeBox"></div>`;
+    $('#bStart').onclick=starten;
+  }else{
+    const n=S.sitzung?S.sitzung.messungen.length:0,m=S.sitzung?S.sitzung.meta:{};
+    k.innerHTML=`<h2>Aufnahme läuft</h2><div class="zeile"><div class="aufName"><b>${esc(m.name||('Aufnahme '+a))}</b>
+      <span class="klein">Nr. ${a} · Start ${esc(m.start||'–')} · ${n} Messung${n===1?'':'en'}</span></div>
+      <button class="stopp" id="bEnde">Beenden &amp; an PC senden</button></div>`;
+    $('#bEnde').onclick=beenden;
+  }
+  if(a==null&&S.letzteBeendet!=null){
+    $('#endeBox').innerHTML=`<div class="box"><b class="ok">Aufnahme ${S.letzteBeendet} beendet und bereitgestellt.</b>
+      <div class="klein">Ein PC mit geöffnetem Tab „PC-Empfang“ lädt sie jetzt automatisch herunter.</div>
+      <div class="knoepfe" style="margin-top:8px"><button class="klein" id="bEndeDl">Hier herunterladen</button><button class="klein" id="bEndeAus">In Auswertung öffnen</button></div></div>`;
+    const id=S.letzteBeendet;
+    $('#bEndeDl').onclick=async()=>{const s=await ladeSession(id);allesHerunterladen(s,{csv:1,einzel:1,json:1,dia:1})};
+    $('#bEndeAus').onclick=()=>{S.auswId=id;zeigeTab('auswertung')};
+  }
+  renderRec();
+}
+async function starten(){
+  const name=($('#sessName').value||namensVorschlag()).trim();
+  try{const j=await post('/api/session/start',{name,zeit:jetzt()});
+    if(j.fehler){toast(j.fehler,'warn');return}
+    S.status.aktiv=j.id;S.letzteBeendet=null;S.sitzung={meta:{id:j.id,name,start:jetzt()},messungen:[]};
+    renderAufnahme();sitzungTabelle();probeVorschlag();toast('Aufnahme '+j.id+' gestartet','gut');
+  }catch(e){toast('Keine Verbindung zum ESP32','warn')}
+}
+async function beenden(){
+  try{const j=await post('/api/session/ende',{zeit:jetzt()});
+    if(j.fehler){toast(j.fehler,'warn');return}
+    S.status.aktiv=null;S.letzteBeendet=j.id;renderAufnahme();toast('Aufnahme '+j.id+' beendet','gut');
+  }catch(e){toast('Keine Verbindung zum ESP32','warn')}
+}
+
+/* ---------------- Faserauswahl ---------------- */
+function renderChips(){
+  $('#faserChips').innerHTML=S.fasern.map((f,i)=>`<button class="chip" aria-pressed="${i===S.faser}" data-i="${i}">${esc(f.name)}</button>`).join('');
+  $$('#faserChips .chip').forEach(b=>b.onclick=()=>{S.faser=+b.dataset.i;lsSet('faser',S.faser);renderChips();probeVorschlag();S.inZone=false});
+  const f=aktFaser();
+  $('#faserInfo').innerHTML=`Ziel: <b>${kz(f.soll,0)} cm ± ${kz(f.tol,1)} cm</b> · λ = ${kz(f.lambda,0)} nm · Werte unter „Einstellungen“ änderbar`;
+  const max=f.soll*2;
+  $('#gZone').style.left=(f.soll-f.tol)/max*100+'%';$('#gZone').style.width=(2*f.tol)/max*100+'%';
+  $('#gMitte').textContent=kz(f.soll,0)+' cm';$('#gMax').textContent=kz(max,0)+' cm';
+}
+function probeVorschlag(){
+  const f=aktFaser();const n=S.sitzung?S.sitzung.messungen.filter(m=>m.faser===f.name).length:0;
+  $('#probe').value=String(n+1);
+}
+
+/* ---------------- Live-Messung ---------------- */
+async function liveSchleife(){
+  for(;;){
+    if(!S.messend&&!document.hidden&&tabAktiv()==='messen'){
+      try{const j=await getJ('/api/live');S.live=j;liveVerarbeiten(j)}
+      catch(e){S.live=null;$('#zielText').className='ziel aus';$('#zielText').textContent='keine Verbindung'}
+      await warte(300);
+    }else await warte(500);
+  }
+}
+function liveVerarbeiten(j){
+  const t=Date.now();
+  if(j.L!=null){S.verlauf.push({t,L:j.L});if(S.anzeigeL==null||RM)S.anzeigeL=j.L}
+  while(S.verlauf.length&&t-S.verlauf[0].t>60000)S.verlauf.shift();
+  const f=aktFaser(),drin=j.L!=null&&Math.abs(j.L-f.soll)<=f.tol;
+  if(drin&&!S.inZone&&navigator.vibrate)navigator.vibrate(60);
+  S.inZone=drin;
+  const letzte=S.verlauf.slice(-6).map(v=>v.L),schw=letzte.length>2?Math.max(...letzte)-Math.min(...letzte):null;
+  $('#liveWerte').innerHTML=
+    `<div>Temperatur<b>${kz(j.T,1)} °C${j.T_sensor?'':' *'}</b></div>`+
+    `<div>Luftfeuchte<b>${kz(j.rh,0)} %</b></div>`+
+    `<div>Schallgeschw.<b>${kz(j.c,1)} m/s</b></div>`+
+    `<div>Rohwert Sensor<b>${kz(j.roh,1)} cm</b></div>`+
+    `<div>Schwankung (6 s)<b>${schw==null?'–':'± '+kz(schw/2,1)+' cm'}</b></div>`+
+    (j.T_sensor?'':'<div style="grid-column:1/-1">* DHT11 antwortet nicht, gerechnet wird mit 20 °C.</div>');
+}
+
+/* Maßband */
+function zeichneBand(){
+  const cv=$('#band'),dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;
+  if(!w)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,w,h);
+  const f=aktFaser(),L=S.anzeigeL,cx=w/2,px=w<520?12:16,y0=22,y1=h-8;
+  // Band
+  const gr=g.createLinearGradient(0,y0,0,y1);gr.addColorStop(0,'#ffd84a');gr.addColorStop(.5,'#f6c625');gr.addColorStop(1,'#e2ad0c');
+  g.fillStyle=gr;g.fillRect(0,y0,w,y1-y0);
+  g.fillStyle='rgba(0,0,0,.18)';g.fillRect(0,y0,w,2);g.fillRect(0,y1-2,w,2);
+  if(L!=null){
+    const xv=v=>cx+(v-L)*px;
+    const z0=xv(f.soll-f.tol),z1=xv(f.soll+f.tol);
+    g.fillStyle=S.inZone?'rgba(23,160,80,.62)':'rgba(23,160,80,.42)';g.fillRect(z0,y0,z1-z0,y1-y0);
+    g.strokeStyle='#0f7a3c';g.lineWidth=2;g.beginPath();g.moveTo(z0,y0);g.lineTo(z0,y1);g.moveTo(z1,y0);g.lineTo(z1,y1);g.stroke();
+    // Skala
+    const vMin=Math.floor(L-cx/px)-1,vMax=Math.ceil(L+cx/px)+1;
+    g.strokeStyle='#2a2205';g.fillStyle='#2a2205';g.textAlign='center';g.textBaseline='alphabetic';
+    for(let v=vMin;v<=vMax;v++){
+      if(v<0)continue;const x=xv(v);
+      const len=v%10===0?24:v%5===0?16:10;g.lineWidth=v%10===0?1.8:1.1;
+      g.beginPath();g.moveTo(x,y0+2);g.lineTo(x,y0+2+len);g.stroke();
+      if(px>=12){const xh=xv(v+.5);g.lineWidth=.8;g.beginPath();g.moveTo(xh,y0+2);g.lineTo(xh,y0+7);g.stroke()}
+      if(v%10===0){g.font='700 15px ui-monospace,Menlo,Consolas,monospace';g.fillText(String(v),x,y0+46)}
+      else if(v%5===0){g.font='500 11px ui-monospace,Menlo,Consolas,monospace';g.fillText(String(v),x,y0+38)}
+    }
+    // Ziel-Beschriftung oder Pfeil zum Ziel
+    g.font='700 12px system-ui,sans-serif';g.textBaseline='middle';
+    const label='Ziel '+kz(f.soll,0)+' ± '+kz(f.tol,0)+' cm';
+    if(z1<0){g.fillStyle='#35c574';g.textAlign='left';g.fillText('◀ '+label,8,11)}
+    else if(z0>w){g.fillStyle='#35c574';g.textAlign='right';g.fillText(label+' ▶',w-8,11)}
+    else{g.fillStyle='#35c574';g.textAlign='center';g.fillText(label,Math.min(Math.max((z0+z1)/2,60),w-60),11)}
+  }else{
+    g.fillStyle='#2a2205';g.font='600 15px system-ui,sans-serif';g.textAlign='center';g.textBaseline='middle';
+    g.fillText('kein Echo – Sensor auf die Wand richten',cx,(y0+y1)/2);
+  }
+  // Ablesemarke
+  g.fillStyle='#e0262e';g.fillRect(cx-1.5,y0-6,3,y1-y0+6);
+  g.beginPath();g.moveTo(cx-7,y0-8);g.lineTo(cx+7,y0-8);g.lineTo(cx,y0);g.closePath();g.fill();
+}
+function zeichneSpark(){
+  const cv=$('#spark'),dpr=window.devicePixelRatio||1,w=cv.clientWidth,h=cv.clientHeight;if(!w)return;
+  if(cv.width!==Math.round(w*dpr)||cv.height!==Math.round(h*dpr)){cv.width=Math.round(w*dpr);cv.height=Math.round(h*dpr)}
+  const g=cv.getContext('2d');g.setTransform(dpr,0,0,dpr,0,0);g.clearRect(0,0,w,h);
+  const cs=getComputedStyle(document.documentElement),cMu=cs.getPropertyValue('--mu').trim(),cOk=cs.getPropertyValue('--okh').trim(),cAk=cs.getPropertyValue('--ak').trim();
+  const f=aktFaser(),v=S.verlauf,t1=Date.now(),t0=t1-60000;
+  let lo=f.soll-3*f.tol,hi=f.soll+3*f.tol;for(const p of v){lo=Math.min(lo,p.L);hi=Math.max(hi,p.L)}
+  const pad=(hi-lo)*.08;lo-=pad;hi+=pad;
+  const X=t=>(t-t0)/60000*(w-40),Y=L=>h-6-(L-lo)/(hi-lo)*(h-12);
+  g.fillStyle=cOk;g.fillRect(0,Y(f.soll+f.tol),w-40,Y(f.soll-f.tol)-Y(f.soll+f.tol));
+  g.fillStyle=cMu;g.font='11px ui-monospace,monospace';g.textAlign='left';g.textBaseline='middle';
+  g.fillText(kz(hi,0),w-36,8);g.fillText(kz(lo,0),w-36,h-8);
+  if(v.length>1){g.strokeStyle=cAk;g.lineWidth=2;g.lineJoin='round';g.beginPath();
+    v.forEach((p,i)=>{const x=X(p.t),y=Y(p.L);i?g.lineTo(x,y):g.moveTo(x,y)});g.stroke()}
+  g.fillStyle=cMu;g.textAlign='left';g.fillText('letzte 60 s',2,8);
+}
+function frame(){
+  const j=S.live,f=aktFaser();
+  if(j&&j.L!=null&&S.anzeigeL!=null&&!RM)S.anzeigeL+=(j.L-S.anzeigeL)*.14;
+  if(j&&j.L==null)S.anzeigeL=null;
+  if(tabAktiv()==='messen'){
+    zeichneBand();zeichneSpark();
+    const L=S.anzeigeL,zt=$('#zielText'),ga=$('#gauge');
+    $('#grossL').innerHTML=(L==null?'–':kz(L,1))+'<small>cm</small>';
+    if(!j){/* Text setzt liveSchleife */}
+    else if(j.L==null){zt.className='ziel aus';zt.textContent='kein Echo'}
+    else{const diff=j.L-f.soll;
+      if(Math.abs(diff)<=f.tol){zt.className='ziel ok';zt.textContent='✓ Abstand passt – messen'}
+      else{zt.className='ziel';zt.textContent=diff>0?kz(diff-f.tol,1)+' cm näher zur Wand':kz(-diff-f.tol,1)+' cm weiter weg'}}
+    const max=f.soll*2,p=L==null?0:Math.min(Math.max(L/max,0),1)*100;
+    $('#gFill').style.width=p+'%';$('#gMark').style.left=p+'%';ga.classList.toggle('drin',S.inZone);
+  }
+  requestAnimationFrame(frame);
+}
+
+/* ---------------- Messung ---------------- */
+$('#bMessen').onclick=async()=>{
+  if(S.status.aktiv==null){toast('Erst eine Aufnahme starten.','warn');return}
+  const f=aktFaser();
+  if(!S.inZone)toast('Hinweis: Abstand liegt außerhalb der Zielzone.','warn');
+  S.messend=true;renderRec();$('#bMessen').textContent='Messe …';
+  const fs=$('#fortschritt');fs.classList.remove('laeuft');void fs.offsetWidth;fs.classList.add('laeuft');
+  try{
+    const j=await post('/api/messen',{faser:f.name,probe:$('#probe').value,soll:f.soll,lref:$('#lref').value,notiz:$('#notiz').value,zeit:jetzt()});
+    if(j.fehler)toast(j.fehler,'warn');
+    else{
+      if(!S.sitzung)S.sitzung={meta:{},messungen:[]};
+      j.abst=null;j.m=null;j.lambda=null;S.sitzung.messungen.push(j);
+      $('#lref').value='';$('#notiz').value='';
+      zeigeLetzte(j);sitzungTabelle();probeVorschlag();renderAufnahme();
+      toast('Messung '+j.nr+' gespeichert: L = '+kz(j.L,2)+' cm','gut');
+    }
+  }catch(e){toast('Keine Verbindung zum ESP32','warn')}
+  S.messend=false;$('#bMessen').textContent='Messung aufnehmen (50 Pings)';fs.classList.remove('laeuft');renderRec();
+};
+function zeigeLetzte(me){
+  $('#letzteKarte').hidden=false;
+  const abw=me.lref!=null?me.L-me.lref:null;
+  $('#letzteWerte').innerHTML=`<h3>${esc(me.faser)} · Probe ${esc(me.probe)}</h3>
+    <div class="werte" style="margin-top:6px">
+      <div>L (Median)<b>${kz(me.L,2)} cm</b></div><div>Standardabw.<b>${kz(me.sd,2)} cm</b></div>
+      <div>Spannweite<b>${kz(me.min,1)} – ${kz(me.max,1)}</b></div><div>gültige Pings<b>${me.n} / 50</b></div>
+      <div>Zollstock<b>${me.lref!=null?kz(me.lref,1)+' cm':'–'}</b></div><div>Abweichung<b>${abw!=null?(abw>0?'+':'')+kz(abw,2)+' cm':'–'}</b></div>
+      <div>Temperatur<b>${kz(me.T,1)} °C</b></div><div>c<b>${kz(me.c,1)} m/s</b></div></div>`;
+  $('#letzteHisto').innerHTML=diaHisto(me,{klein:true});
+}
+function sitzungTabelle(){
+  const ms=S.sitzung?S.sitzung.messungen:[];
+  if(!ms.length){$('#sitzTabelle').innerHTML='<div class="leer">Noch keine Messungen in dieser Aufnahme.</div>';return}
+  $('#sitzTabelle').innerHTML='<table><thead><tr><th>Nr</th><th>Faser</th><th>Probe</th><th class="zahl">L (cm)</th><th class="zahl">σ (cm)</th><th class="zahl">Zollstock</th><th class="zahl">Δ (cm)</th><th>Zeit</th></tr></thead><tbody>'+
+    ms.slice().reverse().map(m=>`<tr><td>${m.nr}</td><td>${esc(m.faser)}</td><td>${esc(m.probe)}</td><td class="zahl">${kz(m.L,2)}</td><td class="zahl">${kz(m.sd,2)}</td><td class="zahl">${m.lref!=null?kz(m.lref,1):'–'}</td><td class="zahl">${m.lref!=null?kz(m.L-m.lref,2):'–'}</td><td>${esc(m.zeit)}</td></tr>`).join('')+'</tbody></table>';
+}
+
+/* ---------------- Diagramme (SVG, druckfertig) ---------------- */
+const FONT='Arial, Helvetica, sans-serif',BLAU='#1f4e8c',ROT='#c3272e';
+function svgKopf(W,H){return `<svg xmlns="http://www.w3.org/2000/svg" width="${W}" height="${H}" viewBox="0 0 ${W} ${H}" font-family="${FONT}" font-size="15"><rect width="${W}" height="${H}" fill="#ffffff"/>`}
+function stellen(st){return (String(+st.toFixed(10)).split('.')[1]||'').length}
+function ticksLin(min,max,n){
+  const span=max-min||1,roh=span/n,mag=Math.pow(10,Math.floor(Math.log10(roh)));
+  const st=[1,2,2.5,5,10].map(k=>k*mag).find(s=>s>=roh*0.999);const out=[];
+  for(let v=Math.ceil(min/st-1e-9)*st;v<=max+st*1e-6;v+=st)out.push(+v.toFixed(10));
+  return {t:out,n:stellen(st)};
+}
+function achsen(o,{ml,mt,pw,ph,xlab,ylab,W,H}){
+  o.push(`<line x1="${ml}" y1="${mt+ph}" x2="${ml+pw}" y2="${mt+ph}" stroke="#000" stroke-width="1.2"/>`);
+  o.push(`<line x1="${ml}" y1="${mt}" x2="${ml}" y2="${mt+ph}" stroke="#000" stroke-width="1.2"/>`);
+  if(xlab)o.push(`<text x="${ml+pw/2}" y="${H-14}" text-anchor="middle" font-size="16">${esc(xlab)}</text>`);
+  if(ylab)o.push(`<text transform="translate(20 ${mt+ph/2}) rotate(-90)" text-anchor="middle" font-size="16">${esc(ylab)}</text>`);
+}
+function leer(W,H,z1,z2){return svgKopf(W,H)+`<text x="${W/2}" y="${H/2-10}" text-anchor="middle" fill="#555" font-size="17">${esc(z1)}</text><text x="${W/2}" y="${H/2+16}" text-anchor="middle" fill="#888" font-size="14">${esc(z2)}</text></svg>`}
+function zeilen(t,max){const w=String(t).split(' '),out=[];let z='';for(const x of w){if((z+' '+x).trim().length>max&&z){out.push(z);z=x}else z=(z+' '+x).trim()}if(z)out.push(z);return out.slice(0,3)}
+
+function diaDurchmesser(s,lq){
+  const W=820,H=520,ml=92,mr=30,mt=48,mb=100,pw=W-ml-mr,ph=H-mt-mb;
+  const gr=gruppen(s,lq);
+  if(!gr.length)return leer(W,H,'Noch keine ausgewerteten Messungen.','In der Tabelle „Beugungsbild auswerten“ den Abstand der Minima eintragen.');
+  const alle=gr.flatMap(g=>g.werte.map(w=>w.d));let lo=Math.min(...alle),hi=Math.max(...alle);
+  const log=hi/lo>6,o=[svgKopf(W,H)];let Y,ticks,nd=0;
+  if(log){
+    let e0=Math.floor(Math.log10(lo)),e1=Math.ceil(Math.log10(hi));if(e1===e0)e1++;
+    Y=v=>mt+ph-(Math.log10(v)-e0)/(e1-e0)*ph;ticks=[];
+    for(let e=e0;e<=e1;e++)for(const k of [1,2,5]){const v=k*Math.pow(10,e);if(v>=Math.pow(10,e0)-1e-12&&v<=Math.pow(10,e1)+1e-12)ticks.push(v)}
+    nd=e0<0?-e0:0;
+  }else{
+    const pad=(hi-lo)*.2||hi*.15;const a=Math.max(0,lo-pad),b=hi+pad;const tl=ticksLin(a,b,6);ticks=tl.t;nd=tl.n;
+    const y0=ticks[0],y1=ticks[ticks.length-1];Y=v=>mt+ph-(v-y0)/(y1-y0)*ph;
+  }
+  for(const v of ticks){const y=Y(v);o.push(`<line x1="${ml}" y1="${y}" x2="${ml+pw}" y2="${y}" stroke="#e3e3e3"/><text x="${ml-8}" y="${y+5}" text-anchor="end">${kz(v,nd)}</text>`)}
+  const band=pw/gr.length;
+  gr.forEach((g,i)=>{
+    const cx=ml+band*(i+.5),ds=g.werte.map(w=>w.d),m=mittel(ds),sd=stdabw(ds),n=ds.length;
+    const sp=Math.min(9,band*.35/Math.max(n,1));
+    g.werte.forEach((w,j)=>o.push(`<circle cx="${cx-24+(j-(n-1)/2)*sp}" cy="${Y(w.d)}" r="4.5" fill="${BLAU}" fill-opacity=".55" stroke="${BLAU}"/>`));
+    const mx=cx+10;
+    if(sd){const a=Y(log?Math.max(m-sd,Math.pow(10,-6)):Math.max(m-sd,0)),b=Y(m+sd);
+      o.push(`<line x1="${mx}" y1="${a}" x2="${mx}" y2="${b}" stroke="#000" stroke-width="1.6"/><line x1="${mx-7}" y1="${a}" x2="${mx+7}" y2="${a}" stroke="#000" stroke-width="1.6"/><line x1="${mx-7}" y1="${b}" x2="${mx+7}" y2="${b}" stroke="#000" stroke-width="1.6"/>`)}
+    o.push(`<rect x="${mx-5}" y="${Y(m)-5}" width="10" height="10" fill="#000"/>`);
+    o.push(`<text x="${mx+14}" y="${Y(m)+5}" font-size="13">${kz(m,m<10?2:1)} µm</text>`);
+    zeilen(g.faser,16).forEach((z,k)=>o.push(`<text x="${cx}" y="${mt+ph+22+k*17}" text-anchor="middle">${esc(z)}</text>`));
+    o.push(`<text x="${cx}" y="${mt+ph+22+Math.min(zeilen(g.faser,16).length,3)*17}" text-anchor="middle" font-size="12" fill="#666">n = ${n}</text>`);
+  });
+  achsen(o,{ml,mt,pw,ph,ylab:'Faserdurchmesser d in µm'+(log?' (log. Skala)':''),W,H});
+  o.push(`<g font-size="12" fill="#333"><circle cx="${ml+14}" cy="${mt-26}" r="4.5" fill="${BLAU}" fill-opacity=".55" stroke="${BLAU}"/><text x="${ml+24}" y="${mt-22}">Einzelprobe</text>
+    <rect x="${ml+110}" y="${mt-31}" width="10" height="10" fill="#000"/><text x="${ml+126}" y="${mt-22}">Mittelwert ± Standardabweichung</text></g>`);
+  return o.join('')+'</svg>';
+}
+
+function diaValidierung(s){
+  const W=640,H=500,ml=84,mr=26,mt=26,mb=70,pw=W-ml-mr,ph=H-mt-mb;
+  const p=s.messungen.filter(m=>m.lref!=null&&m.L!=null);
+  if(!p.length)return leer(W,H,'Keine Messungen mit Zollstock-Gegenprobe.','Beim Messen „L mit Zollstock“ eintragen.');
+  const vs=p.flatMap(m=>[m.L,m.lref]);let lo=Math.min(...vs),hi=Math.max(...vs);const pad=Math.max((hi-lo)*.08,1);lo-=pad;hi+=pad;
+  const tl=ticksLin(lo,hi,6),a=tl.t[0]<lo?tl.t[0]:Math.min(lo,tl.t[0]),b=Math.max(hi,tl.t[tl.t.length-1]);
+  const X=v=>ml+(v-a)/(b-a)*pw,Y=v=>mt+ph-(v-a)/(b-a)*ph,o=[svgKopf(W,H)];
+  for(const v of tl.t){if(v<a||v>b)continue;o.push(`<line x1="${ml}" y1="${Y(v)}" x2="${ml+pw}" y2="${Y(v)}" stroke="#e3e3e3"/><line x1="${X(v)}" y1="${mt}" x2="${X(v)}" y2="${mt+ph}" stroke="#eeeeee"/>`);
+    o.push(`<text x="${ml-8}" y="${Y(v)+5}" text-anchor="end">${kz(v,tl.n)}</text><text x="${X(v)}" y="${mt+ph+20}" text-anchor="middle">${kz(v,tl.n)}</text>`)}
+  o.push(`<line x1="${X(a)}" y1="${Y(a)}" x2="${X(b)}" y2="${Y(b)}" stroke="#777" stroke-dasharray="6 5" stroke-width="1.4"/>`);
+  for(const m of p)o.push(`<circle cx="${X(m.lref)}" cy="${Y(m.L)}" r="5" fill="${BLAU}" fill-opacity=".6" stroke="${BLAU}"/>`);
+  const d=p.map(m=>m.L-m.lref),md=mittel(d),sd=stdabw(d);
+  o.push(`<g font-size="13" fill="#222"><text x="${ml+12}" y="${mt+20}">mittlere Abweichung Δ = ${md>0?'+':''}${kz(md,2)} cm</text>
+    <text x="${ml+12}" y="${mt+38}">Standardabweichung s = ${sd==null?'–':kz(sd,2)+' cm'} · n = ${p.length}</text>
+    <line x1="${ml+12}" y1="${mt+54}" x2="${ml+40}" y2="${mt+54}" stroke="#777" stroke-dasharray="6 5"/><text x="${ml+46}" y="${mt+58}">ideale Übereinstimmung</text></g>`);
+  achsen(o,{ml,mt,pw,ph,xlab:'L mit Zollstock in cm',ylab:'L mit Ultraschall in cm',W,H});
+  return o.join('')+'</svg>';
+}
+
+function diaHisto(me,opt){
+  opt=opt||{};const W=640,H=opt.klein?400:520,ml=70,mr=24,mt=74,mb=64,pw=W-ml-mr,ph=H-mt-mb;
+  if(!me||!me.werte||!me.werte.length)return leer(W,H,'Keine Einzelwerte vorhanden.','');
+  const v=me.werte,mn=Math.min(...v),mx=Math.max(...v),span=mx-mn;
+  const bw=[.02,.05,.1,.2,.25,.5,1,2,5].find(b=>span/b<=14)||5;
+  const s0=Math.floor(mn/bw+1e-9)*bw,nb=Math.max(1,Math.floor((mx-s0)/bw+1e-9)+1),cnt=new Array(nb).fill(0);
+  for(const x of v)cnt[Math.min(nb-1,Math.floor((x-s0)/bw+1e-9))]++;
+  const a=s0-bw,b=s0+(nb+1)*bw,cmax=Math.max(...cnt),tl=ticksLin(0,cmax,Math.min(cmax,5));
+  const ymax=tl.t[tl.t.length-1]<cmax?cmax:tl.t[tl.t.length-1];
+  const X=x=>ml+(x-a)/(b-a)*pw,Y=c=>mt+ph-c/ymax*ph,o=[svgKopf(W,H)],nd=stellen(bw);
+  for(const t of tl.t){if(t%1)continue;o.push(`<line x1="${ml}" y1="${Y(t)}" x2="${ml+pw}" y2="${Y(t)}" stroke="#e3e3e3"/><text x="${ml-8}" y="${Y(t)+5}" text-anchor="end">${t}</text>`)}
+  cnt.forEach((c,i)=>{const x0=X(s0+i*bw),x1=X(s0+(i+1)*bw);
+    o.push(`<rect x="${x0+1}" y="${Y(c)}" width="${Math.max(x1-x0-2,1)}" height="${mt+ph-Y(c)}" fill="#9db4cf" stroke="${BLAU}"/>`)});
+  const schritt=Math.ceil((nb+2)/8);
+  for(let i=0;i<=nb+1;i+=schritt){const x=s0+(i-1)*bw;o.push(`<text x="${X(x)}" y="${mt+ph+20}" text-anchor="middle" font-size="13">${kz(x,nd)}</text>`)}
+  o.push(`<line x1="${X(me.L)}" y1="${mt}" x2="${X(me.L)}" y2="${mt+ph}" stroke="${ROT}" stroke-width="2" stroke-dasharray="7 4"/>`);
+  o.push(`<g font-size="13" fill="#222"><text x="${ml+pw}" y="${22}" text-anchor="end" fill="${ROT}">- - Median ${kz(me.L,2)} cm</text>
+    <text x="${ml+pw}" y="${40}" text-anchor="end">s = ${kz(me.sd,2)} cm · n = ${v.length}</text>
+    <text x="${ml}" y="${22}" fill="#666">${esc(me.faser)}, Probe ${esc(me.probe)}</text></g>`);
+  achsen(o,{ml,mt,pw,ph,xlab:'Einzelmesswert L in cm (Klassenbreite '+kz(bw,nd)+' cm)',ylab:'Häufigkeit',W,H});
+  return o.join('')+'</svg>';
+}
+
+async function svgZuPng(svg,scale){
+  scale=scale||3;
+  const m=svg.match(/width="(\d+)" height="(\d+)"/),W=+m[1],H=+m[2];
+  const url=URL.createObjectURL(new Blob([svg],{type:'image/svg+xml;charset=utf-8'}));
+  const img=new Image();await new Promise((r,f)=>{img.onload=r;img.onerror=f;img.src=url});
+  const c=document.createElement('canvas');c.width=W*scale;c.height=H*scale;const g=c.getContext('2d');
+  g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);URL.revokeObjectURL(url);
+  return new Promise(r=>c.toBlob(r,'image/png'));
+}
+function speichern(name,blob){
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download=name;document.body.appendChild(a);a.click();
+  setTimeout(()=>{URL.revokeObjectURL(a.href);a.remove()},1500);
+}
+
+/* ---------------- Exporte ---------------- */
+const csvT=s=>'"'+String(s==null?'':s).replace(/"/g,'""')+'"';
+const csvZ=(v,n)=>(v==null||!isFinite(v))?'':Number(v).toFixed(n).replace('.',',');
+const csvBlob=zeilen=>new Blob(['﻿'+zeilen.map(z=>z.join(';')).join('\r\n')+'\r\n'],{type:'text/csv;charset=utf-8'});
+function basisName(s){const n=(s.meta.name||'Aufnahme').replace(/[^0-9A-Za-zÄÖÜäöüß-]+/g,'_').replace(/^_|_$/g,'').slice(0,40);return 'Laserbeugung_A'+String(s.meta.id||0).padStart(2,'0')+'_'+n}
+function csvMessungen(s,lq){
+  const z=[['Nr','Zeit','Faser','Probe','Soll_L_cm','L_Ultraschall_cm','Mittelwert_cm','Stdabw_cm','Min_cm','Max_cm','n_gueltig','L_Zollstock_cm','Abweichung_cm',
+    'Temp_C','Temp_Quelle','rel_Feuchte_%','c_m_s','Offset_cm','L_fuer_d_cm','Abstand_Minima_cm','Ordnung_m','Lambda_nm','Beugungswinkel_Grad','d_exakt_um','d_Kleinwinkel_um','Notiz']];
+  for(const m of s.messungen){const d=dBerechnen(m,lq);
+    z.push([m.nr,csvT(m.zeit),csvT(m.faser),csvT(m.probe),csvZ(m.soll,1),csvZ(m.L,2),csvZ(m.mittel,2),csvZ(m.sd,3),csvZ(m.min,2),csvZ(m.max,2),m.n,
+      csvZ(m.lref,1),m.lref!=null?csvZ(m.L-m.lref,2):'',csvZ(m.T,1),m.Tsensor?'DHT11':'Ersatzwert',csvZ(m.rh,0),csvZ(m.c,1),csvZ(m.off,2),
+      d?csvZ(d.L,2):'',csvZ(m.abst,2),d?d.m:'',d?csvZ(d.lam,1):'',d?csvZ(d.theta,3):'',d?csvZ(d.exakt,3):'',d?csvZ(d.klein,3):'',csvT(m.notiz)])}
+  return csvBlob(z);
+}
+function zusammenfassung(s,lq){
+  return gruppen(s,lq).map(g=>{const d=g.werte.map(w=>w.d),k=g.werte.map(w=>w.klein);
+    return {faser:g.faser,n:d.length,m:mittel(d),sd:stdabw(d),min:Math.min(...d),max:Math.max(...d),mk:mittel(k),abw:(mittel(k)-mittel(d))/mittel(d)*100}});
+}
+function csvZus(s,lq){
+  const z=[['Faser','n_Proben','d_Mittel_um','d_Stdabw_um','d_Min_um','d_Max_um','d_Kleinwinkel_Mittel_um','Fehler_Kleinwinkel_%']];
+  for(const r of zusammenfassung(s,lq))z.push([csvT(r.faser),r.n,csvZ(r.m,3),csvZ(r.sd,3),csvZ(r.min,3),csvZ(r.max,3),csvZ(r.mk,3),csvZ(r.abw,2)]);
+  return csvBlob(z);
+}
+function csvEinzel(s){
+  const z=[['Nr','Faser','Probe','Ping','L_cm']];
+  for(const m of s.messungen)(m.werte||[]).forEach((v,i)=>z.push([m.nr,csvT(m.faser),csvT(m.probe),i+1,csvZ(v,2)]));
+  return csvBlob(z);
+}
+async function allesHerunterladen(s,opt){
+  const b=basisName(s),lq=S.lq;
+  if(opt.csv){speichern(b+'_messungen.csv',csvMessungen(s,lq));await warte(400);speichern(b+'_zusammenfassung.csv',csvZus(s,lq));await warte(400)}
+  if(opt.einzel){speichern(b+'_einzelwerte.csv',csvEinzel(s));await warte(400)}
+  if(opt.json){speichern(b+'_rohdaten.json',new Blob([JSON.stringify(s,null,1)],{type:'application/json'}));await warte(400)}
+  if(opt.dia){speichern(b+'_AbbA_durchmesser.png',await svgZuPng(diaDurchmesser(s,lq)));await warte(400);
+    speichern(b+'_AbbB_validierung.png',await svgZuPng(diaValidierung(s)));await warte(400)}
+}
+
+/* ---------------- Auswertung ---------------- */
+async function sessionsLaden(){try{S.sessions=(await getJ('/api/sessions')).sort((a,b)=>b.id-a.id)}catch(e){S.sessions=[]}return S.sessions}
+function sessLabel(x){return 'Nr. '+x.id+' · '+(x.meta.name||'ohne Namen')+' · '+x.n+' Messungen'+(x.aktiv?' · läuft':'')}
+async function auswertungOeffnen(){
+  await sessionsLaden();const sel=$('#selSession');
+  if(!S.sessions.length){sel.innerHTML='<option>Noch keine Aufnahmen</option>';S.ausw=null;renderAuswertung();return}
+  if(S.auswId==null||!S.sessions.some(x=>x.id===S.auswId))S.auswId=S.sessions[0].id;
+  sel.innerHTML=S.sessions.map(x=>`<option value="${x.id}"${x.id===S.auswId?' selected':''}>${esc(sessLabel(x))}</option>`).join('');
+  try{S.ausw=await ladeSession(S.auswId)}catch(e){S.ausw=null;toast('Aufnahme konnte nicht geladen werden','warn')}
+  renderAuswertung();
+}
+$('#selSession').onchange=e=>{S.auswId=+e.target.value;auswertungOeffnen()};
+$('#bNeuLaden').onclick=auswertungOeffnen;
+$$('input[name=lq]').forEach(r=>r.onchange=()=>{S.lq=$('input[name=lq]:checked').value;renderAuswertung()});
+function renderAuswertung(){
+  const s=S.ausw;
+  if(!s){$('#sessInfo').textContent='';['#ausTabelle','#zusTabelle'].forEach(i=>$(i).innerHTML='<div class="leer">Keine Daten.</div>');
+    $('#dia1').innerHTML=diaDurchmesser({messungen:[]},S.lq);$('#dia2').innerHTML=diaValidierung({messungen:[]});$('#dia3').innerHTML=diaHisto(null);return}
+  const ms=s.messungen;
+  $('#sessInfo').textContent=`${s.meta.name||'Aufnahme'} · Start ${s.meta.start||'–'} · ${s.ende?'beendet '+s.ende.zeit:'läuft noch'} · ${ms.length} Messungen`;
+  if(!ms.length)$('#ausTabelle').innerHTML='<div class="leer">Diese Aufnahme enthält noch keine Messungen.</div>';
+  else $('#ausTabelle').innerHTML='<table><thead><tr><th>Nr</th><th>Faser</th><th>Probe</th><th class="zahl">L (cm)</th><th class="zahl">Zollstock</th><th>Abstand Minima (cm)</th><th>m</th><th>λ (nm)</th><th class="zahl">θ (°)</th><th class="zahl">d exakt (µm)</th><th class="zahl">d Kleinw. (µm)</th></tr></thead><tbody>'+
+    ms.map(m=>`<tr data-nr="${m.nr}"><td>${m.nr}</td><td>${esc(m.faser)}</td><td>${esc(m.probe)}</td><td class="zahl">${kz(m.L,2)}</td><td class="zahl">${m.lref!=null?kz(m.lref,1):'–'}</td>
+      <td><input data-f="abst" inputmode="decimal" value="${m.abst!=null?kz(m.abst,2):''}" aria-label="Abstand Minima Messung ${m.nr}"></td>
+      <td><input data-f="m" inputmode="numeric" style="width:52px" placeholder="1" value="${m.m!=null?m.m:''}" aria-label="Ordnung Messung ${m.nr}"></td>
+      <td><input data-f="lambda" inputmode="decimal" style="width:70px" placeholder="${kz(lambdaVon(m.faser),0)}" value="${m.lambda!=null?kz(m.lambda,0):''}" aria-label="Wellenlänge Messung ${m.nr}"></td>
+      <td class="zahl" data-z="theta"></td><td class="zahl" data-z="exakt"></td><td class="zahl" data-z="klein"></td></tr>`).join('')+'</tbody></table>';
+  $$('#ausTabelle input').forEach(i=>i.onchange=auswertungSpeichern);
+  aktualisiereBerechnung();
+}
+function aktualisiereBerechnung(){
+  const s=S.ausw;if(!s)return;
+  for(const tr of $$('#ausTabelle tr[data-nr]')){const m=s.messungen.find(x=>x.nr===+tr.dataset.nr),d=dBerechnen(m,S.lq);
+    tr.querySelector('[data-z=theta]').textContent=d?kz(d.theta,2):'–';tr.querySelector('[data-z=exakt]').textContent=d?kz(d.exakt,d.exakt<10?3:2):'–';
+    tr.querySelector('[data-z=klein]').textContent=d?kz(d.klein,d.klein<10?3:2):'–'}
+  const zs=zusammenfassung(s,S.lq);
+  $('#zusTabelle').innerHTML=zs.length?'<table><thead><tr><th>Faser</th><th class="zahl">n</th><th class="zahl">d Mittel (µm)</th><th class="zahl">s (µm)</th><th class="zahl">Min</th><th class="zahl">Max</th><th class="zahl">Fehler Kleinwinkel</th></tr></thead><tbody>'+
+    zs.map(r=>`<tr><td>${esc(r.faser)}</td><td class="zahl">${r.n}</td><td class="zahl"><b>${kz(r.m,r.m<10?2:1)}</b></td><td class="zahl">${r.sd==null?'–':kz(r.sd,r.m<10?2:1)}</td><td class="zahl">${kz(r.min,r.m<10?2:1)}</td><td class="zahl">${kz(r.max,r.m<10?2:1)}</td><td class="zahl">${r.abw>0?'+':''}${kz(r.abw,1)} %</td></tr>`).join('')+'</tbody></table>'
+    :'<div class="leer">Sobald Abstände der Minima eingetragen sind, erscheint hier die Tabelle für die Arbeit.</div>';
+  $('#dia1').innerHTML=diaDurchmesser(s,S.lq);$('#dia2').innerHTML=diaValidierung(s);
+  const sel=$('#selHisto'),alt=sel.value;
+  sel.innerHTML=s.messungen.map(m=>`<option value="${m.nr}">Nr. ${m.nr} · ${esc(m.faser)}</option>`).join('');
+  if(alt&&s.messungen.some(m=>String(m.nr)===alt))sel.value=alt;
+  histoZeichnen();
+}
+function histoZeichnen(){const s=S.ausw;if(!s)return;const m=s.messungen.find(x=>String(x.nr)===$('#selHisto').value)||s.messungen[s.messungen.length-1];$('#dia3').innerHTML=diaHisto(m)}
+$('#selHisto').onchange=histoZeichnen;
+async function auswertungSpeichern(e){
+  const tr=e.target.closest('tr'),nr=+tr.dataset.nr,m=S.ausw.messungen.find(x=>x.nr===nr);
+  const v=f=>zahl(tr.querySelector(`[data-f=${f}]`).value);
+  m.abst=v('abst');m.m=v('m');m.lambda=v('lambda');aktualisiereBerechnung();
+  try{const j=await post('/api/auswertung',{id:S.auswId,nr,abst:m.abst==null?'':m.abst,m:m.m==null?'':m.m,lambda:m.lambda==null?'':m.lambda});
+    if(j.fehler)toast(j.fehler,'warn')}catch(err){toast('Nicht gespeichert – keine Verbindung','warn')}
+}
+function aktuelleDia(n){const s=S.ausw||{messungen:[],meta:{}};
+  if(n==='1')return diaDurchmesser(s,S.lq);if(n==='2')return diaValidierung(s);
+  return diaHisto(s.messungen.find(x=>String(x.nr)===$('#selHisto').value))}
+$$('[data-dia]').forEach(b=>b.onclick=async()=>{
+  if(!S.ausw){toast('Erst eine Aufnahme wählen','warn');return}
+  const svg=aktuelleDia(b.dataset.dia),nm=basisName(S.ausw)+'_Abb'+'ABC'[+b.dataset.dia-1];
+  if(b.dataset.fmt==='svg')speichern(nm+'.svg',new Blob([svg],{type:'image/svg+xml'}));
+  else speichern(nm+'.png',await svgZuPng(svg));
+});
+$$('[data-export]').forEach(b=>b.onclick=async()=>{
+  const s=S.ausw;if(!s){toast('Erst eine Aufnahme wählen','warn');return}
+  const t=b.dataset.export,nm=basisName(s);
+  if(t==='messungen')speichern(nm+'_messungen.csv',csvMessungen(s,S.lq));
+  if(t==='zusammenfassung')speichern(nm+'_zusammenfassung.csv',csvZus(s,S.lq));
+  if(t==='einzelwerte')speichern(nm+'_einzelwerte.csv',csvEinzel(s));
+  if(t==='json')speichern(nm+'_rohdaten.json',new Blob([JSON.stringify(s,null,1)],{type:'application/json'}));
+  if(t==='alles')allesHerunterladen(s,{csv:1,einzel:1,json:1,dia:1});
+});
+
+/* ---------------- PC-Empfang ---------------- */
+const E={an:false,bekannt:null,timer:null};
+function logE(t){const li=document.createElement('li');li.textContent=new Date().toLocaleTimeString('de-DE')+'  '+t;$('#empfLog').prepend(li)}
+$('#bEmpfang').onclick=()=>{
+  E.an=!E.an;$('#bEmpfang').textContent=E.an?'Empfang stoppen':'Empfang starten';$('#bEmpfang').className=E.an?'stopp':'haupt';
+  if(E.an){E.bekannt=null;logE('Empfang gestartet');empfangPruefen();E.timer=setInterval(empfangPruefen,3000)}
+  else{clearInterval(E.timer);$('#empfStatus').textContent='Empfang aus';logE('Empfang gestoppt')}
+};
+async function empfangPruefen(){
+  let liste;try{liste=await getJ('/api/sessions')}catch(e){$('#empfStatus').textContent='Keine Verbindung zum ESP32 …';return}
+  const neu={};for(const x of liste)neu[x.id]=x;
+  if(E.bekannt){for(const x of liste){const alt=E.bekannt[x.id];
+    if(x.ende&&(!alt||!alt.ende)){logE('Aufnahme '+x.id+' „'+(x.meta.name||'')+'“ beendet – lade herunter');
+      try{const s=await ladeSession(x.id);await allesHerunterladen(s,{csv:$('#eCsv').checked,einzel:$('#eEinzel').checked,json:$('#eJson').checked,dia:$('#eDia').checked});logE('Aufnahme '+x.id+' gespeichert ✓')}
+      catch(e){logE('Fehler beim Herunterladen von Aufnahme '+x.id)}}}}
+  E.bekannt=neu;
+  const lauf=liste.find(x=>x.aktiv);
+  $('#empfStatus').textContent='verbunden · '+liste.length+' Aufnahmen'+(lauf?' · Aufnahme '+lauf.id+' läuft ('+lauf.n+' Messungen)':' · keine läuft');
+  S.sessions=liste.sort((a,b)=>b.id-a.id);renderListe('#empfListe',false);
+}
+async function listeAktualisieren(){await sessionsLaden();renderListe('#empfListe',false)}
+function renderListe(sel,loeschen){
+  const c=$(sel);if(!S.sessions.length){c.innerHTML='<div class="leer">Noch keine Aufnahmen gespeichert.</div>';return}
+  c.innerHTML='<table><thead><tr><th>Nr</th><th>Name</th><th>Start</th><th class="zahl">Messungen</th><th>Status</th><th></th></tr></thead><tbody>'+
+    S.sessions.map(x=>`<tr><td>${x.id}</td><td>${esc(x.meta.name||'–')}</td><td>${esc(x.meta.start||'–')}</td><td class="zahl">${x.n}</td><td>${x.aktiv?'läuft':x.ende?'beendet':'offen'}</td>
+      <td><div class="knoepfe">${loeschen?`<button class="klein" data-del="${x.id}">Löschen</button><button class="klein haupt" data-delja="${x.id}" hidden>Wirklich löschen</button>`
+        :`<button class="klein" data-dl="${x.id}">Herunterladen</button><button class="klein" data-aus="${x.id}">Auswerten</button>`}</div></td></tr>`).join('')+'</tbody></table>';
+  c.querySelectorAll('[data-dl]').forEach(b=>b.onclick=async()=>{const s=await ladeSession(+b.dataset.dl);allesHerunterladen(s,{csv:1,einzel:1,json:1,dia:1})});
+  c.querySelectorAll('[data-aus]').forEach(b=>b.onclick=()=>{S.auswId=+b.dataset.aus;zeigeTab('auswertung')});
+  c.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{b.hidden=true;c.querySelector(`[data-delja="${b.dataset.del}"]`).hidden=false});
+  c.querySelectorAll('[data-delja]').forEach(b=>b.onclick=async()=>{const id=+b.dataset.delja;await post('/api/session/loeschen',{id});
+    if(S.status.aktiv===id){S.status.aktiv=null;renderAufnahme()}toast('Aufnahme '+id+' gelöscht');einstellungenOeffnen()});
+}
+
+/* ---------------- Einstellungen ---------------- */
+async function einstellungenOeffnen(){
+  await statusLaden();const st=S.status;
+  $('#netzInfo').innerHTML=`Eigenes WLAN „Laserbeugung“: <b>http://${esc(st.ap_ip||'192.168.4.1')}</b>`+
+    (st.sta_ip?` · Im WLAN „${esc(st.ssid)}“: <b>http://${esc(st.sta_ip)}</b> oder <b>http://${esc(st.mdns)}</b>`:(st.ssid?` · WLAN „${esc(st.ssid)}“ gerade nicht erreichbar`:''));
+  $('#wSsid').value=st.ssid||'';
+  $('#speicherInfo').textContent=st.gesamt_kb?`Belegt: ${st.belegt_kb} von ${st.gesamt_kb} KB · Versatz Sensor ↔ Faser: ${kz(st.offset,2)} cm`:'';
+  await sessionsLaden();renderListe('#sessListe',true);faserEditor();
+}
+$('#bKalib').onclick=async()=>{
+  $('#kalibErg').textContent='Kalibriere … (50 Pings)';S.messend=true;
+  try{const j=await post('/api/kalibrieren',{lref:$('#kref').value});
+    $('#kalibErg').textContent=j.fehler?j.fehler:`Neuer Versatz: ${kz(j.offset,2)} cm (Streuung s = ${kz(j.sd,2)} cm). Gespeichert.`}
+  catch(e){$('#kalibErg').textContent='Keine Verbindung zum ESP32.'}
+  S.messend=false;
+};
+function faserEditor(){
+  $('#faserEditor').innerHTML='<table><thead><tr><th>Name</th><th>Soll-L (cm)</th><th>Toleranz (cm)</th><th>λ (nm)</th><th></th></tr></thead><tbody>'+
+    S.fasern.map((f,i)=>`<tr data-i="${i}"><td><input data-k="name" style="width:220px" value="${esc(f.name)}"></td><td><input data-k="soll" inputmode="decimal" value="${kz(f.soll,1)}"></td>
+      <td><input data-k="tol" inputmode="decimal" value="${kz(f.tol,1)}"></td><td><input data-k="lambda" inputmode="decimal" value="${kz(f.lambda,0)}"></td>
+      <td><button class="klein" data-weg="${i}" aria-label="Faser entfernen">Entfernen</button></td></tr>`).join('')+'</tbody></table>';
+  $$('#faserEditor [data-weg]').forEach(b=>b.onclick=()=>{faserLesen();S.fasern.splice(+b.dataset.weg,1);faserEditor()});
+}
+function faserLesen(){
+  S.fasern=$$('#faserEditor tr[data-i]').map(tr=>{const g=k=>tr.querySelector(`[data-k=${k}]`).value;
+    return {name:g('name').trim()||'Faser',soll:zahl(g('soll'))||50,tol:zahl(g('tol'))||2,lambda:zahl(g('lambda'))||650}});
+}
+$('#bFaserNeu').onclick=()=>{faserLesen();S.fasern.push({name:'Neue Faser',soll:100,tol:3,lambda:650});faserEditor()};
+$('#bFaserStandard').onclick=()=>{S.fasern=STD_FASERN.map(f=>({...f}));faserEditor()};
+$('#bFaserSpeichern').onclick=async()=>{
+  faserLesen();if(!S.fasern.length)S.fasern=STD_FASERN.map(f=>({...f}));
+  if(S.faser>=S.fasern.length)S.faser=0;renderChips();
+  try{const j=await post('/api/fasern',{daten:JSON.stringify(S.fasern)});toast(j.fehler||'Fasern gespeichert',j.fehler?'warn':'gut')}
+  catch(e){toast('Keine Verbindung zum ESP32','warn')}
+};
+$('#bWlan').onclick=async()=>{
+  try{await post('/api/wlan',{ssid:$('#wSsid').value.trim(),pass:$('#wPass').value})}catch(e){}
+  toast('Gespeichert. Die Station startet neu – in ca. 15 s neu verbinden.','gut');
+};
+
+/* ---------------- Start ---------------- */
+async function init(){
+  try{const f=await getJ('/api/fasern');if(Array.isArray(f)&&f.length)S.fasern=f}catch(e){}
+  S.faser=+(lsGet('faser')||0);if(!(S.faser>=0&&S.faser<S.fasern.length))S.faser=0;
+  renderChips();await statusLaden();
+  if(S.status.aktiv!=null){try{S.sitzung=await ladeSession(S.status.aktiv)}catch(e){S.sitzung={meta:{},messungen:[]}}}
+  renderAufnahme();sitzungTabelle();probeVorschlag();
+  const l=S.sitzung&&S.sitzung.messungen[S.sitzung.messungen.length-1];if(l)zeigeLetzte(l);
+  zeigeTab(location.hash.slice(1)||'messen');
+  liveSchleife();requestAnimationFrame(frame);
+  setInterval(async()=>{ // Status mit anderen Geräten abgleichen
+    const vorher=S.status.aktiv;await statusLaden();
+    if(S.status.aktiv!==vorher){
+      if(S.status.aktiv!=null){try{S.sitzung=await ladeSession(S.status.aktiv)}catch(e){}}
+      else if(vorher!=null&&S.letzteBeendet==null)S.letzteBeendet=vorher;
+      renderAufnahme();sitzungTabelle();probeVorschlag()}
+  },8000);
+}
+init();
+</script>
+</body></html>
+)HTML";
